@@ -3,11 +3,6 @@ package make_array_zero_by_subtracting_equal_amounts
 import "sort"
 
 func minimumOperations(nums []int) int {
-	//
-	//
-	//
-	//
-	//
 	x := 0
 	operationsCount := 0
 
