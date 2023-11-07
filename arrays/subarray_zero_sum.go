@@ -1,5 +1,7 @@
 package arrays
 
+import "fmt"
+
 /*
  Given an array consisting of integers (possibly negative integers). Check if there exists a non-empty subarray such
  that the sum of elements in it is 0.
@@ -13,16 +15,17 @@ func findSubarrayZeroSum(array []int) bool {
 	}
 
 	prefixSum := getPrefixSum(array)
-	//number -> index
-	indecesByVal := make(map[int]int)
+	indicesByVal := make(map[int]int)
 
 	for i, val := range prefixSum {
-		_, ok := indecesByVal[val]
+		_, ok := indicesByVal[val]
 		if ok {
+			subArray := array[indicesByVal[val]+1 : i+1]
+			fmt.Printf("Subarray: %v | Between %d and %d\n", subArray, indicesByVal[val]+1, i)
 			return true
 		}
 
-		indecesByVal[val] = i
+		indicesByVal[val] = i
 	}
 
 	return false
