@@ -1,4 +1,4 @@
-package arrays
+package subarray_zero_sum
 
 import "fmt"
 
