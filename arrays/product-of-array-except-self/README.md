@@ -14,7 +14,7 @@ Example 1:
 Input: nums = [1,2,3,4]
 Output: [24,12,8,6]
 
-Example 2:
+Example 2:0
 
 Input: nums = [-1,1,0,-3,3]
 Output: [0,0,9,0,0]
@@ -30,3 +30,11 @@ Constraints:
 
 
 Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
+
+# Solution
+Calculate the prefix product and suffix product of the input. Then for each element of `nums` multiply the prefix
+product of the previous position by the suffix product of the next position:
+```go
+prefixProduct(i-1) * suffixProduct(i+1)
+```
+We should never include `i` because what we want is the product of the whole array **except** for `i`
