@@ -1,7 +1,5 @@
 package valid_sudoku
 
-import "unicode"
-
 // 1. Each row must contain the digits 1-9 without repetition.
 // 2. Each column must contain the digits 1-9 without repetition.
 // 3. Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
@@ -32,7 +30,8 @@ func isValidSudoku(board [][]byte) bool {
 			rowVal = board[row][col]
 			colVal = board[col][row]
 
-			if unicode.IsDigit(rune(rowVal)) {
+			c := rune(rowVal)
+			if c >= '0' && c <= '9' {
 				_, ok := rowMap[rowVal]
 				if ok {
 					return false
@@ -49,7 +48,8 @@ func isValidSudoku(board [][]byte) bool {
 
 			}
 
-			if unicode.IsDigit(rune(colVal)) {
+			c = rune(colVal)
+			if c >= '0' && c <= '9' {
 				_, ok := colMap[colVal]
 				if ok {
 					return false
