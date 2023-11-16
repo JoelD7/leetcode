@@ -60,8 +60,9 @@ Constraints:
 
 # Solution
 Iterate over the array keeping track of the digits on each row(`rowMap`), column(`colMap`)
-and 3x3 grid(`tbtMap`). On each iteration ask whether the digit exists on each map. 
+and 3x3 grid(`tbtMap`). On each iteration ask whether the digit exist on each map. 
 
 The `tbtMap` includes all the grids or cuadrants of the board. Each cuadrant is identified
-by the coordinates of the it's top left corner digit. The function `getCuadrant` gets those
-coordinates using the current row and column. 
+by the coordinates of the it's top left corner digit; that's the key of the `tbtMap`, 
+and the value is a map that tracks the items on that cuadrant. The function `getCuadrant`
+gets those  coordinates using the current row and column. 
