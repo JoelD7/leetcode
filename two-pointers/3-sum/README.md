@@ -37,3 +37,14 @@ Constraints:
     -105 <= nums[i] <= 105
 
 # Solution
+Sort the array in order to use the two-pointers method of increasing the left(`l`) pointer
+if the sum is less than 0, or decrease the right(`r`) pointer if the sum is greater than 0.
+The difference here is that the sum now has a third component, so instead of adding two
+values(the pointers), add three values: the pointers and the current element being processed
+(`cur`). On each iteration update the value of `cur` and use the two pointer method on the
+subarray after `cur`(i+1, len(nums)-1).
+
+Note that when we find a triplet, we still have to keep processing `i` because there may be
+another triplet that includes it. In that case we update `l` and not `r` because either,
+we already have evaluated `r` and know that it doesn't comply with the zero sum, or, `r` is
+the last element of the array. In either case there is no need to update `r`.

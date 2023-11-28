@@ -1,56 +1,45 @@
 package three_sum
 
+import (
+	"fmt"
+	"sort"
+)
+
 func threeSum(nums []int) [][]int {
-	//prefixSum := getPrefixSum(nums)
+	sort.Ints(nums)
 	triplets := make([][]int, 0)
 
-	var l, r int
+	var l, r, cur, sum int
+	var tripletStr string
+	var ok bool
+	addedTriplets := make(map[string]struct{})
 
-	//{-1, 0, 1, 2, -1, -4}
-	for i := 0; i < len(nums); i++ {
-		l = 0
+	for i := 0; i < len(nums)-1; i++ {
+		cur = nums[i]
+		l = i + 1
 		r = len(nums) - 1
 
 		for l < r {
-			if l == i {
+
+			sum = cur + nums[l] + nums[r]
+
+			if sum == 0 {
+				tripletStr = fmt.Sprintf("%d%d%d", cur, nums[l], nums[r])
+
+				_, ok = addedTriplets[tripletStr]
+				if !ok {
+					triplets = append(triplets, []int{cur, nums[l], nums[r]})
+
+					addedTriplets[tripletStr] = struct{}{}
+				}
 				l++
-				continue
-			}
-
-			if r == i {
+			} else if sum > 0 {
 				r--
-				continue
+			} else {
+				l++
 			}
-
-			if nums[i]+nums[l]+nums[r] == 0 {
-				triplets = append(triplets, []int{nums[i], nums[l], nums[r]})
-			}
-
-			l++
-			r--
 		}
 	}
 
 	return triplets
-}
-
-func getPrefixSum(nums []int) []int {
-	prev := nums[0]
-	ps := make([]int, 0)
-	ps = append(ps, prev)
-
-	for i := 1; i < len(nums); i++ {
-		ps = append(ps, prev+nums[i])
-		prev += nums[i]
-	}
-
-	return ps
-}
-
-func rangeSum(l, r int, prefixSum []int) int {
-	if l == 0 {
-		return prefixSum[r]
-	}
-
-	return prefixSum[r] - prefixSum[l-1]
 }
