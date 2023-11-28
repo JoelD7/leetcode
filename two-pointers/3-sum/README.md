@@ -48,3 +48,7 @@ Note that when we find a triplet, we still have to keep processing `i` because t
 another triplet that includes it. In that case we update `l` and not `r` because either,
 we already have evaluated `r` and know that it doesn't comply with the zero sum, or, `r` is
 the last element of the array. In either case there is no need to update `r`.
+
+We use a map `addedTriplets` to keep check of the triplets already added. Because `nums`
+is sorted, we know it is safe to use the triplet components in the order the appear as
+there won't be another triplet with the same components in another order.
