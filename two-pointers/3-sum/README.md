@@ -44,11 +44,9 @@ values(the pointers), add three values: the pointers and the current element bei
 (`cur`). On each iteration update the value of `cur` and use the two pointer method on the
 subarray after `cur`(i+1, len(nums)-1).
 
-Note that when we find a triplet, we still have to keep processing `i` because there may be
-another triplet that includes it. In that case we update `l` and not `r` because either,
-we already have evaluated `r` and know that it doesn't comply with the zero sum, or, `r` is
-the last element of the array. In either case there is no need to update `r`.
+If `cur` is a positive number, we continue with the next iteration because is impossible that
+a positive number plus two other larger numbers to be equal to zero. If `cur` is equal to its
+previous number it would mean we would have a duplicate triplet, so we ignore it.
 
-We use a map `addedTriplets` to keep check of the triplets already added. Because `nums`
-is sorted, we know it is safe to use the triplet components in the order the appear as
-there won't be another triplet with the same components in another order.
+Inside the two pointer loop after encountering a triplet, we move the pointers until we reach
+a point where they change their values, this is to prevent duplicate triplets. 
