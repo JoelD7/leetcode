@@ -63,3 +63,14 @@ Constraints:
     0 <= height[i] <= 104
 
 # Solution
+## Clarifications
+- The problem is asking to find the largest rectangle area that can be formed using the height
+of the lines: `w x h`
+- `w = the numbers between the points + 1`
+- `h = height of the smaller of the two points`
+
+---
+Use two pointers: `l` and `r`. Find the max area by calculating it according to the aforementioned
+formula. That calculation requires `w` and `h`. The width is the distance between the pointers,
+the height is the smallest value of the two pointers. This is why the height should always point to
+the smallest value; we should move the correspoding pointer to match that condition. 
