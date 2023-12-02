@@ -1,5 +1,7 @@
 package container_most_water
 
+import "math"
+
 /*
 Notes
 
@@ -9,42 +11,38 @@ h = height of the smaller of the two points.
 */
 
 func maxArea(height []int) int {
-	//	Use two pointers. Advance the l pointer until there is no element between it and r.
-	//	Then advance r until there is no element between it an l.
-	//	Calculate the area on each iteration and save the max area in a variable, update it if you find another larger area
+	//1. Find the largest number in height
+	//2. Set one of the pointers to that index
+	//3. Move the other pointer along height
+	//4. Calculate the area on each iteration and save the max area in a variable, update it if you find another larger area
+	largest := 0
+	a := 0
 
-	l := 0
-	r := len(height) - 1
+	for i := 0; i < len(height); i++ {
+		if height[i] > largest {
+			largest = height[i]
+			a = i
+		}
+	}
+
 	max := 0
 	area := 0
 	minHeight := 0
 
-	for l < r {
-		minHeight = height[r]
-		if height[l] < height[r] {
-			minHeight = height[l]
+	for i := 0; i < len(height); i++ {
+		if i == a {
+			continue
 		}
 
-		area = (r - l) * minHeight
+		minHeight = height[i]
+		if height[a] < height[i] {
+			minHeight = height[a]
+		}
+
+		area = int(math.Abs(float64(i-a))) * minHeight
 		if area > max {
 			max = area
 		}
-
-		l++
-	}
-
-	l = 0
-	for r > l {
-		minHeight = height[r]
-		if height[l] < height[r] {
-			minHeight = height[l]
-		}
-
-		area = (r - l) * minHeight
-		if area > max {
-			max = area
-		}
-		r--
 	}
 
 	return max
