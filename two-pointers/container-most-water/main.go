@@ -11,37 +11,29 @@ h = height of the smaller of the two points.
 */
 
 func maxArea(height []int) int {
-	//1. Find the largest number in height
-	//2. Set one of the pointers to that index
-	//3. Move the other pointer along height
-	//4. Calculate the area on each iteration and save the max area in a variable, update it if you find another larger area
-	largest := 0
-	a := 0
-
-	for i := 0; i < len(height); i++ {
-		if height[i] > largest {
-			largest = height[i]
-			a = i
-		}
-	}
+	//	Use two pointers. Advance the l pointer until there is no element between it and r.
+	//	Then advance r until there is no element between it an l.
+	//	Calculate the area on each iteration and save the max area in a variable, update it if you find another larger area
 
 	max := 0
-	area := 0
 	minHeight := 0
+	area := 0
 
 	for i := 0; i < len(height); i++ {
-		if i == a {
-			continue
-		}
+		for j := 0; j < len(height); j++ {
+			if i == j {
+				continue
+			}
 
-		minHeight = height[i]
-		if height[a] < height[i] {
-			minHeight = height[a]
-		}
+			minHeight = height[i]
+			if height[j] < height[i] {
+				minHeight = height[j]
+			}
 
-		area = int(math.Abs(float64(i-a))) * minHeight
-		if area > max {
-			max = area
+			area = int(math.Abs(float64(i-j))) * minHeight
+			if area > max {
+				max = area
+			}
 		}
 	}
 
