@@ -29,26 +29,26 @@ func isValid(s string) bool {
 		"]": "[",
 	}
 
-	var char, stack, poped, openChar string
+	var char, poped, openChar string
 	var ok bool
+	stack := newStack()
 
 	for _, c := range s {
 		char = string(c)
 
 		_, ok = openingTag[char]
 		if ok {
-			stack = char + stack
+			stack.push(char)
 			continue
 		}
 
 		_, ok = closingTag[char]
-		if ok && len(stack) == 0 {
+		if ok && stack.length == 0 {
 			return false
 		}
 
 		if ok {
-			poped = stack[0:1]
-			stack = stack[1:]
+			poped = stack.pop()
 		}
 
 		openChar, _ = closedToOpen[char]
@@ -57,9 +57,58 @@ func isValid(s string) bool {
 		}
 	}
 
-	if len(stack) > 0 {
+	if stack.length > 0 {
 		return false
 	}
 
 	return true
+}
+
+type node struct {
+	val  string
+	prev *node
+}
+
+type Stack struct {
+	head   *node
+	length int
+}
+
+func newStack() *Stack {
+	return &Stack{nil, 0}
+}
+
+func (s *Stack) push(val string) {
+	s.length++
+
+	if s.head == nil {
+		s.head = &node{val, nil}
+
+		return
+	}
+
+	curHead := &node{s.head.val, s.head.prev}
+	s.head.val = val
+	s.head.prev = curHead
+}
+
+func (s *Stack) pop() string {
+	if s.head == nil {
+		return ""
+	}
+
+	s.length--
+
+	curHead := s.head
+	s.head = curHead.prev
+
+	return curHead.val
+}
+
+func (s *Stack) peek() string {
+	if s.head == nil {
+		return ""
+	}
+
+	return s.head.val
 }
