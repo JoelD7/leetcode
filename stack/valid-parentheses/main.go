@@ -1,4 +1,4 @@
-package stack
+package valid_parentheses
 
 /*
 - Itera sobre el string y ve agregando cada caracter c a un stack

@@ -1,4 +1,4 @@
-package stack
+package valid_parentheses
 
 import (
 	"github.com/stretchr/testify/require"
