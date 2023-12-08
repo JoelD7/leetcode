@@ -38,6 +38,11 @@ func (this *MinStack) Push(val int) {
 		newHead := &Node{nil, val}
 		this.head = newHead
 		this.min = val
+
+		if this.minStack != nil {
+			this.minStack.Push(val)
+		}
+
 		return
 	}
 
@@ -45,7 +50,7 @@ func (this *MinStack) Push(val int) {
 	this.head.val = val
 	this.head.prev = curHead
 
-	if val < this.min {
+	if this.minStack != nil && val <= this.minStack.Top() {
 		this.minStack.Push(val)
 	}
 }
@@ -57,7 +62,16 @@ func (this *MinStack) Pop() {
 
 	this.length--
 
-	this.head = this.head.prev
+	curHead := &Node{this.head.prev, this.head.val}
+
+	this.head = &Node{
+		prev: curHead.prev.prev,
+		val:  curHead.prev.val,
+	}
+
+	if this.minStack != nil && this.minStack.Top() == curHead.val {
+		this.minStack.Pop()
+	}
 }
 
 func (this *MinStack) Top() int {
@@ -66,7 +80,7 @@ func (this *MinStack) Top() int {
 
 // GetMin returns the minimum value in the stack without removing it.
 func (this *MinStack) GetMin() int {
-
+	return this.minStack.Top()
 }
 
 /**
