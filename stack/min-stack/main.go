@@ -16,7 +16,6 @@ type Node struct {
 type MinStack struct {
 	head     *Node
 	minStack *MinStack
-	min      int
 	length   int
 }
 
@@ -37,7 +36,6 @@ func (this *MinStack) Push(val int) {
 	if this.head == nil {
 		newHead := &Node{nil, val}
 		this.head = newHead
-		this.min = val
 
 		if this.minStack != nil {
 			this.minStack.Push(val)
@@ -64,9 +62,13 @@ func (this *MinStack) Pop() {
 
 	curHead := &Node{this.head.prev, this.head.val}
 
-	this.head = &Node{
-		prev: curHead.prev.prev,
-		val:  curHead.prev.val,
+	if curHead.prev == nil {
+		this.head = nil
+	} else {
+		this.head = &Node{
+			prev: curHead.prev.prev,
+			val:  curHead.prev.val,
+		}
 	}
 
 	if this.minStack != nil && this.minStack.Top() == curHead.val {
