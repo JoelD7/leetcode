@@ -9,12 +9,6 @@ func removeOuterParentheses(s string) string {
 	stack := NewStack()
 
 	for i, c := range s {
-		if stack.length == 0 && i != 0 {
-			tmp = tmp[1 : len(tmp)-1]
-			primitives = append(primitives, tmp)
-			tmp = ""
-		}
-
 		str = string(c)
 		tmp += str
 
@@ -22,6 +16,12 @@ func removeOuterParentheses(s string) string {
 			stack.Push(0)
 		} else {
 			stack.Pop()
+		}
+
+		if stack.length == 0 && i != 0 {
+			tmp = tmp[1 : len(tmp)-1]
+			primitives = append(primitives, tmp)
+			tmp = ""
 		}
 	}
 

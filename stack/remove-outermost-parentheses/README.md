@@ -45,3 +45,5 @@ Constraints:
     s[i] is either '(' or ')'.
     s is a valid parentheses string.
 
+# Solution
+I noticed the fact that a valid group of parentheses can be detected when using a stack: push when detecting an opening parentheses and popping when detecting a closing one. When the stack has zero elements on it, it means that all opening parentheses have a matching closing parentheses. Each time the stack reaches zero length, it means a parentheses group has been found. When that happens, add the group to the list of `primitives`, removing the first and last characters of the string which will always be the outermost parentheses.
