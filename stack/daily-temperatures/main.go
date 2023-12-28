@@ -1,13 +1,20 @@
 package daily_temperatures
 
+const initFlag = -1
+
 // [73,74,75,71,69,72,76,73]
 func dailyTemperatures(temperatures []int) []int {
-	result := make([]int, len(temperatures))
+	result := initResult(len(temperatures))
 
 	stack := newStack()
 
-	var cur, next, top, popCount, j int
+	var cur, next, top, minDisFromCur, newTop, j int
 	for i := 0; i < len(temperatures)-1; i++ {
+		//Element has already been processed
+		if result[i] != initFlag {
+			continue
+		}
+
 		cur = temperatures[i]
 		next = temperatures[i+1]
 
@@ -17,20 +24,35 @@ func dailyTemperatures(temperatures []int) []int {
 		}
 
 		if stack.length > 0 {
+			minDisFromCur = 0
+
 			for {
 				top = stack.pop()
-				popCount++
+				newTop = stack.peek()
 
-				if top > cur {
-
+				if top > newTop {
+					result[i+stack.length-1] = 1
 				}
 
-				if top == cur {
+				if top > cur {
+					minDisFromCur = 1
+				} else {
+					minDisFromCur++
+				}
+
+				//Only two elements in the stack: cur and next(top)
+				if stack.length == 2 && top > cur {
+					result[i] = 1
+					break
+				}
+
+				if stack.length == 0 && minDisFromCur != 1 {
+					result[i] = minDisFromCur
 					break
 				}
 			}
 
-			result[i] = popCount
+			result[i] = minDisFromCur
 			continue
 		}
 
@@ -45,6 +67,16 @@ func dailyTemperatures(temperatures []int) []int {
 			stack.push(next)
 			j++
 		}
+	}
+
+	return result
+}
+
+func initResult(length int) []int {
+	result := make([]int, length)
+
+	for i := 0; i < length; i++ {
+		result[i] = initFlag
 	}
 
 	return result
@@ -84,4 +116,8 @@ func (s *Stack) pop() int {
 	s.head = curHead.prev
 
 	return curHead.val
+}
+
+func (s *Stack) peek() int {
+	return s.head.val
 }
