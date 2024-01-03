@@ -2,18 +2,35 @@ package daily_temperatures
 
 // [73,74,75,71,69,72,76,73]
 func dailyTemperatures(temperatures []int) []int {
-	result := make([]int, len(temperatures))
-
+	//result := make([]int, len(temperatures))
+	result := initResult(len(temperatures))
 	stack := newStack()
 
-	var top, j int
+	var top, j, next int
 
 	for i := 0; i < len(temperatures)-1; i++ {
+		if result[i] != -1 {
+			continue
+		}
+
 		if !stack.isEmpty() {
+			next = stack.peek() + 1
+		}
+
+		for !stack.isEmpty() {
+			if next == len(temperatures)-1 {
+				break
+			}
+
 			top = stack.peek()
 
-			if temperatures[top] < temperatures[top+1] {
-				result[stack.pop()] = 1
+			if temperatures[top] < temperatures[next] {
+				result[stack.pop()] = next - top
+				if !stack.isEmpty() {
+					next = stack.peek() + 1
+				}
+			} else {
+				next++
 			}
 		}
 
@@ -26,7 +43,22 @@ func dailyTemperatures(temperatures []int) []int {
 		if temperatures[j] > temperatures[i] {
 			result[i] = j - i
 		}
+	}
 
+	for i := 0; i < len(temperatures); i++ {
+		if result[i] == -1 {
+			result[i] = 0
+		}
+	}
+
+	return result
+}
+
+func initResult(length int) []int {
+	result := make([]int, length)
+
+	for i := 0; i < length; i++ {
+		result[i] = -1
 	}
 
 	return result
