@@ -1,64 +1,24 @@
 package daily_temperatures
 
-// [73,74,75,71,69,72,76,73]
 func dailyTemperatures(temperatures []int) []int {
-	//result := make([]int, len(temperatures))
-	result := initResult(len(temperatures))
+	result := make([]int, len(temperatures))
 	stack := newStack()
 
-	var top, j, next int
-
 	for i := 0; i < len(temperatures)-1; i++ {
-		if result[i] != -1 {
-			continue
-		}
+		if temperatures[i] < temperatures[i+1] {
+			result[i] = 1
 
-		if !stack.isEmpty() {
-			next = stack.peek() + 1
-		}
-
-		for !stack.isEmpty() {
-			if next == len(temperatures)-1 {
-				break
+			for !stack.isEmpty() && temperatures[stack.peek()] < temperatures[i+1] {
+				result[stack.peek()] = (i + 1) - stack.pop()
 			}
 
-			top = stack.peek()
-
-			if temperatures[top] < temperatures[next] {
-				result[stack.pop()] = next - top
-				if !stack.isEmpty() {
-					next = stack.peek() + 1
-				}
-			} else {
-				next++
-			}
-		}
-
-		j = i + 1
-		for temperatures[j] <= temperatures[i] && j < len(temperatures)-1 {
-			stack.push(j)
-			j++
-		}
-
-		if temperatures[j] > temperatures[i] {
-			result[i] = j - i
+		} else {
+			stack.push(i)
 		}
 	}
 
-	for i := 0; i < len(temperatures); i++ {
-		if result[i] == -1 {
-			result[i] = 0
-		}
-	}
-
-	return result
-}
-
-func initResult(length int) []int {
-	result := make([]int, length)
-
-	for i := 0; i < length; i++ {
-		result[i] = -1
+	for !stack.isEmpty() {
+		result[stack.pop()] = 0
 	}
 
 	return result
