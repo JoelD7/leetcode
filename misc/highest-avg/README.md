@@ -24,3 +24,9 @@ If several students have the same average marks, then the student with the lower
         12: (85+92)/2 = 177/2 = 88.5
         8: (88+90)/2 = 178/2 = 89
         Both 10 and 8 have the same average marks, but 8 has a lower ID than 10. Therefore, the student with the highest average marks is 12.
+# Solution
+First, grouped the grades by students in a map whose value is an array of two elements, containing the current average grade for the student(`curAvg`) and the amount of grades calculated so far(`size`). The idea here is to keep updating the average grade of a student on each iteration, instead of using another loop later to do that; this is why we need `size`.
+
+Then, I update the `maxAvg` each time we discover a higher value, and also update `maxAvgStudent`, which holds the ID of the student to which that new, higher average belongs to. **DO NOT FORGET TO UPDATE THIS**, as this is the value we are looking for. 
+
+If the max averages are equal, then we just select the lowest ID.
