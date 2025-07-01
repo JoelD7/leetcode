@@ -27,3 +27,12 @@ Return *the maximum profit you can achieve from this transaction*. If you cannot
     1 <= prices.length <= 105
     0 <= prices[i] <= 104
 
+# Solution
+To obtain the maximum profit we should buy the stock at the lowest possible price and sell it at the highest price. We emphasize "possible" because the selling price should be positioned after the buying price in the array.
+
+## Implementation
+The buying price(`buyPrice`) should be the lowest possible. For that reason, we iterate over the array updating `buyPrice` only when we find a lowest value than the current one. 
+
+On each iteration we subtract the current element(the potential `sellPrice`) from `buyPrice` and update the value of `profit`, a variable that will hold the maximum profit **so far**. If the result of that operation is larger than the current `profit`, we update it's value. 
+
+After iterating over the whole array, we would have reached the maximum profit. 
