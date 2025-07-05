@@ -23,4 +23,12 @@ func TestMaxSubArray(t *testing.T) {
 	t.Run("5,4,-1,7,8", func(t *testing.T) {
 		c.Equal(23, maxSubArray([]int{5, 4, -1, 7, 8}))
 	})
+
+	t.Run("-2,1", func(t *testing.T) {
+		c.Equal(1, maxSubArray([]int{-2, 1}))
+	})
+
+	t.Run("-1,-2", func(t *testing.T) {
+		c.Equal(-1, maxSubArray([]int{-1, -2}))
+	})
 }

@@ -1,7 +1,7 @@
 # Problem
 https://leetcode.com/problems/maximum-subarray/description/
 
-Given an integer array nums, find the with the largest sum, and return its sum.
+Given an integer array nums, find the subarray with the largest sum, and return its sum.
 
 
 
@@ -33,3 +33,44 @@ Given an integer array nums, find the with the largest sum, and return its sum.
 
 
 Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
+
+# Solution
+This is solved Kadane's algorithm that is precisely designed for finding a subarray that produces the maximum sum within an array.
+
+## Implementation
+First, we initialize our starting values:
+
+    func maxSubArray(nums []int) int {
+        maxSum := -10000 
+        curMaxSum := 0
+        max := func(a, b int) int {
+            if a > b {
+                return a
+            }
+            return b
+        }
+    ...
+    }
+
+- `maxSum`: This will hold the maximum sum found so far. We'll return this value at the end of the function.
+- `curMaxSum`: Holds the maximum sum of all the subarrays that end in `i`, or said in aonther way, of the subarray we're currently iterating over.
+- `max`: Utility function that returns the maximum value between two integers.
+
+Then, we iterate over the array and compare each element `nums[i]` with `curMaxSum` plus `nums[i]`. If adding `nums[i]` to `curMaxSum` produces a larger value than `nums[i]`, we add that value to `curMaxSum`, update `maxSum` and continue with the next iteration to see if adding the next element produces a larger value(we're looking for the maximum after all):
+
+    for i := 0; i < len(nums); i++ {
+		if nums[i]+curMaxSum >= nums[i] {
+			maxSum = max(maxSum, nums[i]+curMaxSum)
+			curMaxSum += nums[i]
+			continue
+		}
+
+If it doesn't, then it means that the subarray upto `nums[i]` included negative values, and that `nums[i]` is a subarray larger than all the subarrays ending in it, so it doesn't make sense to keep track of the previous values. Hence, we reset `curMaxSum` to `nums[i]` and continue iterating. 
+
+    for i := 0; i < len(nums); i++ {
+        ...
+        curMaxSum = nums[i]
+        maxSum = max(maxSum, nums[i])
+    }
+
+When we are done iterating, we return `maxSum`.
