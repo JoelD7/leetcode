@@ -28,4 +28,7 @@ func TestMaxSubArray(t *testing.T) {
 		c.Equal(24, maxProduct([]int{2, -5, -2, -4, 3}))
 	})
 
+	t.Run("-3,0,1,-2", func(t *testing.T) {
+		c.Equal(1, maxProduct([]int{-3, 0, 1, -2}))
+	})
 }
