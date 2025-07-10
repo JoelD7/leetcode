@@ -15,16 +15,15 @@ func maxProduct(nums []int) int {
 	}
 
 	for i := 0; i < len(nums); i++ {
-		curDot = nums[i]
-		maxDot = max(maxDot, curDot)
-		if nums[i] == 0 {
-			continue
-		}
+		curDot *= nums[i]
+		maxDot = max(curDot, maxDot)
+	}
 
-		for j := i + 1; j < len(nums); j++ {
-			curDot *= nums[j]
-			maxDot = max(maxDot, curDot)
-		}
+	curDot = 1
+
+	for i := len(nums) - 1; i >= 0; i-- {
+		curDot *= nums[i]
+		maxDot = max(curDot, maxDot)
 	}
 
 	return maxDot
