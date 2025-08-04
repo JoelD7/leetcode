@@ -16,16 +16,13 @@ func threeSumClosest(nums []int, target int) int {
 		return a * -1
 	}
 
-	i := 0
-	j := i + 1
-	k := len(nums) - 1
-
-	threeSum := 0
-	closestTotal := 0
+	var i, j, k, threeSum, closestTotal, curDiff int
 	minDiff := math.MaxInt64
-	curDiff := 0
 
 	for ; i < len(nums)-2; i++ {
+		j = i + 1
+		k = len(nums) - 1
+
 		for j < k {
 			threeSum = sum(nums[i], nums[j], nums[k])
 			curDiff = abs(threeSum - target)
