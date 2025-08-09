@@ -2,7 +2,7 @@ package group_anagrams
 
 import "sort"
 
-func groupAnagrams(strs []string) [][]string {
+func groupAnagramsOriginal(strs []string) [][]string {
 	anagramGroup := map[string][]string{}
 	var key string
 
