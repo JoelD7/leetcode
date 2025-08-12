@@ -5,33 +5,48 @@ import (
 )
 
 type RandomizedSet struct {
-	m    map[int]int
-	keys []int
+	m          map[int]int
+	indexByVal map[int]int
+	i          int
+	keys       []int
+	lastDelIdx int
 }
 
 func Constructor() RandomizedSet {
 	return RandomizedSet{
-		m:    make(map[int]int),
-		keys: make([]int, 0),
+		m:          make(map[int]int),
+		indexByVal: make(map[int]int),
+		keys:       make([]int, 0),
+		lastDelIdx: -1,
+		i:          0,
 	}
 }
 
 func (this *RandomizedSet) Insert(val int) bool {
-	_, ok := this.m[val]
+	_, ok := this.indexByVal[val]
 	if ok {
 		return false
 	}
 
-	this.m[val] = val
-	this.updateKeys()
+	if this.lastDelIdx >= 0 {
+		this.m[this.lastDelIdx] = val
+		this.indexByVal[val] = this.lastDelIdx
+		this.lastDelIdx = -1
+	} else {
+		this.m[this.i] = val
+		this.indexByVal[val] = this.i
+		this.i++
+	}
+
 	return true
 }
 
 func (this *RandomizedSet) Remove(val int) bool {
-	_, ok := this.m[val]
+	i, ok := this.indexByVal[val]
 	if ok {
-		delete(this.m, val)
-		this.updateKeys()
+		delete(this.m, i)
+		this.lastDelIdx = i
+		delete(this.indexByVal, val)
 		return true
 	}
 
@@ -39,31 +54,13 @@ func (this *RandomizedSet) Remove(val int) bool {
 }
 
 func (this *RandomizedSet) GetRandom() int {
-	maxIndex := len(this.keys)
-
-	if len(this.keys) == 1 {
-		return this.m[this.keys[0]]
-	}
-
-	index, val := 0, 0
-	ok := false
-
-	for !ok {
-		index = rand.Intn(maxIndex)
-		val, ok = this.m[this.keys[index]]
-		if ok {
-			return val
-		}
+	index := rand.Intn(this.i)
+	val, ok := this.m[index]
+	if ok {
+		return val
 	}
 
 	return 0
-}
-
-func (this *RandomizedSet) updateKeys() {
-	this.keys = make([]int, 0)
-	for k, _ := range this.m {
-		this.keys = append(this.keys, k)
-	}
 }
 
 /**
