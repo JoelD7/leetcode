@@ -54,13 +54,16 @@ func (this *RandomizedSet) Remove(val int) bool {
 }
 
 func (this *RandomizedSet) GetRandom() int {
-	index := rand.Intn(this.i)
-	val, ok := this.m[index]
-	if ok {
-		return val
+	var val, index int
+	var ok, indexOk bool
+
+	for !(indexOk && ok) {
+		index = rand.Intn(this.i)
+		val, ok = this.m[index]
+		_, indexOk = this.indexByVal[val]
 	}
 
-	return 0
+	return val
 }
 
 /**
