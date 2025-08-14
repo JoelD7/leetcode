@@ -8,7 +8,6 @@ type RandomizedSet struct {
 	m          map[int]int
 	indexByVal map[int]int
 	i          int
-	keys       []int
 	lastDelIdx int
 }
 
@@ -16,7 +15,6 @@ func Constructor() RandomizedSet {
 	return RandomizedSet{
 		m:          make(map[int]int),
 		indexByVal: make(map[int]int),
-		keys:       make([]int, 0),
 		lastDelIdx: -1,
 		i:          0,
 	}
@@ -55,12 +53,11 @@ func (this *RandomizedSet) Remove(val int) bool {
 
 func (this *RandomizedSet) GetRandom() int {
 	var val, index int
-	var ok, indexOk bool
+	var ok bool
 
-	for !(indexOk && ok) {
+	for !ok {
 		index = rand.Intn(this.i)
 		val, ok = this.m[index]
-		_, indexOk = this.indexByVal[val]
 	}
 
 	return val
