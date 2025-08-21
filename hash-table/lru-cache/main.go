@@ -5,13 +5,14 @@ import (
 )
 
 type LRUCache struct {
-	incr       int
-	lowestIncr int
-	cache      map[int]int
-	keyByIncr  map[int]int
-	incrByKey  map[int]int
 	cap        int
 	length     int
+	incr       int
+	lowestIncr int
+
+	cache     map[int]int
+	keyByIncr map[int]int
+	incrByKey map[int]int
 }
 
 func Constructor(capacity int) LRUCache {
@@ -32,8 +33,7 @@ func (this *LRUCache) Get(key int) int {
 		return -1
 	}
 
-	var keyIncr int
-	keyIncr, ok = this.incrByKey[key]
+	keyIncr, ok := this.incrByKey[key]
 	if ok {
 		if keyIncr < this.lowestIncr {
 			this.lowestIncr = keyIncr + 1
@@ -48,16 +48,15 @@ func (this *LRUCache) Get(key int) int {
 }
 
 func (this *LRUCache) Put(key int, value int) {
-	var ok bool
-	_, ok = this.cache[key]
+	_, ok := this.cache[key]
 	if ok {
 		this.cache[key] = value
 		this.incr++
 
 		cur, _ := this.incrByKey[key]
 		delete(this.keyByIncr, cur)
-		this.keyByIncr[this.incr] = key
 
+		this.keyByIncr[this.incr] = key
 		this.incrByKey[key] = this.incr
 		return
 	}
@@ -70,7 +69,6 @@ func (this *LRUCache) Put(key int, value int) {
 			this.lowestIncr++
 		}
 		delete(this.cache, k)
-		delete(this.incrByKey, k)
 	}
 
 	this.cache[key] = value
@@ -79,6 +77,7 @@ func (this *LRUCache) Put(key int, value int) {
 	if this.incr < this.lowestIncr {
 		this.lowestIncr = this.incr
 	}
+
 	this.incrByKey[key] = this.incr
 	if this.length < this.cap {
 		this.length++
