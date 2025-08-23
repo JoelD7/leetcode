@@ -24,3 +24,21 @@ func TestIntToRoman(t *testing.T) {
 		c.Equal("CI", intToRoman(101))
 	})
 }
+
+func BenchmarkIntToRoman(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		intToRoman(3749)
+		intToRoman(58)
+		intToRoman(1994)
+		intToRoman(101)
+	}
+}
+
+func BenchmarkIntToRomanRecursive(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		intToRomanRecursive(3749)
+		intToRomanRecursive(58)
+		intToRomanRecursive(1994)
+		intToRomanRecursive(101)
+	}
+}
