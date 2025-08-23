@@ -19,4 +19,8 @@ func TestIntToRoman(t *testing.T) {
 	t.Run("1994", func(t *testing.T) {
 		c.Equal("MCMXCIV", intToRoman(1994))
 	})
+
+	t.Run("101", func(t *testing.T) {
+		c.Equal("CI", intToRoman(101))
+	})
 }

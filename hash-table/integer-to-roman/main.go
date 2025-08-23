@@ -71,16 +71,14 @@ func intToRoman(num int) string {
 		},
 	}
 
-	// 3749
-	//MMMDCCXLIX
 	numStr := strconv.Itoa(num)
 	size := len(numStr)
 	var digit, unit, digitUnit, roman string
 	var ok bool
 
-	digit = string(numStr[0])              //3
-	unit, _ = table.unitByPosition[size-1] //000
-	digitUnit = digit + unit               //700
+	digit = string(numStr[0])
+	unit, _ = table.unitByPosition[size-1]
+	digitUnit = digit + unit
 
 	_, ok = table.subtractiveDigits[digit]
 	if ok {
@@ -117,6 +115,10 @@ func intToRomanHelper(num string, table *Table) string {
 	digit := string(num[0])
 	unit, _ := table.unitByPosition[size-1]
 	digitUnit := digit + unit
+
+	if digit == "0" && size > 1 {
+		return intToRomanHelper(num, table)
+	}
 
 	_, ok := table.subtractiveDigits[digit]
 	if ok {
