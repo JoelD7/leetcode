@@ -1,8 +1,11 @@
 package longest_repeating_char_replacement
 
 func characterReplacement(s string, k int) int {
-	var i, maxLength, curLen, maxFreq int
-	var ok bool
+	i := 0
+	j := 1
+	maxLength := 0
+	maxFreq := 0
+	charsNeedChange := 0
 	max := func(a, b int) int {
 		if a > b {
 			return a
@@ -10,25 +13,29 @@ func characterReplacement(s string, k int) int {
 
 		return b
 	}
-	freq := make(map[string]int)
+	freq := map[string]int{
+		string(s[i]): 1,
+	}
 
-	for j := 0; j < len(s); j++ {
-		curLen = j - i + 1
+	for j < len(s) {
+		valueJ := string(s[j])
 
-		_, ok = freq[string(s[j])]
+		_, ok := freq[valueJ]
 		if ok {
-			freq[string(s[j])]++
+			freq[valueJ]++
 		} else {
-			freq[string(s[j])] = 1
+			freq[valueJ] = 1
 		}
 
-		maxFreq = max(maxFreq, freq[string(s[j])])
+		maxFreq = max(maxFreq, freq[valueJ])
 
-		if curLen-maxFreq > k {
-			freq[string(s[i])]--
-			i++
+		charsNeedChange = (j - i + 1) - maxFreq
+		if charsNeedChange > k {
+			i++ //window shrinks
+		} else {
+			maxLength = max(maxLength, j-i+1)
+			j++ //window increases
 		}
-		maxLength = max(maxLength, j-i+1)
 	}
 
 	return maxLength
