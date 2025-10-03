@@ -12,6 +12,14 @@ func TestCharacterReplacement(t *testing.T) {
 		c.Equal(4, characterReplacement("ABAB", 2))
 	})
 
+	t.Run("A, k = 2", func(t *testing.T) {
+		c.Equal(1, characterReplacement("A", 2))
+	})
+
+	t.Run("ABAB, k = 0", func(t *testing.T) {
+		c.Equal(1, characterReplacement("ABAB", 0))
+	})
+
 	t.Run("AABABBA, k = 1", func(t *testing.T) {
 		c.Equal(4, characterReplacement("AABABBA", 1))
 	})
