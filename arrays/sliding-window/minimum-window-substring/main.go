@@ -7,41 +7,52 @@ import (
 func minWindow(s string, t string) string {
 	m := len(s)
 	n := len(t)
-	tFreq := map[string]int{}
-	tsUsed := n
-	minLength := math.MaxInt32
-	min := func(a, b int) int {
-		if a < b {
-			return a
-		}
-		return b
-	}
+	charCount := map[string]int{}
+	targetCharsRemaining := n
+	minWindowArr := []int{0, math.MaxInt32}
 	var i int
+	var charAtStart string
 
 	if n > m {
 		return ""
 	}
 
 	for j := 0; j < n; j++ {
-		if _, ok := tFreq[string(t[j])]; ok {
-			tFreq[string(t[j])]++
+		if _, ok := charCount[string(t[j])]; ok {
+			charCount[string(t[j])]++
 		} else {
-			tFreq[string(t[j])] = 1
+			charCount[string(t[j])] = 1
 		}
 	}
 
 	for j := 0; j < len(s); j++ {
-		if val, ok := tFreq[string(s[j])]; ok && val > 0 {
-			tFreq[string(s[j])]-- // I shouldn't be updating this map because I need it for other iterations.
-			tsUsed--
+		if val, ok := charCount[string(s[j])]; ok && val > 0 {
+			targetCharsRemaining--
 		}
+		charCount[string(s[j])]--
 
-		//Input: s = "ADOBEC ODEBANC", t = "ABC"
-		//Output: "BANC"
-		if tsUsed == 0 {
-			minLength = min(minLength, j-i+1)
-			tsUsed = n
+		if targetCharsRemaining == 0 {
+			for {
+				charAtStart = string(s[i])
+				if val, _ := charCount[charAtStart]; val == 0 {
+					break
+				}
+				charCount[charAtStart]++
+				i++
+			}
+
+			if j-i < minWindowArr[1]-minWindowArr[0] {
+				minWindowArr = []int{i, j}
+			}
+			charCount[string(s[i])]++
+			targetCharsRemaining++
 			i++
 		}
 	}
+
+	if minWindowArr[1] > len(s) {
+		return ""
+	}
+
+	return s[minWindowArr[0] : minWindowArr[1]+1]
 }
