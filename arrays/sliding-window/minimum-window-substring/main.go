@@ -5,7 +5,7 @@ import (
 )
 
 func minWindow(s string, t string) string {
-	charCount := map[byte]int{}
+	charCount := make(map[byte]int)
 	targetCharsRemaining := len(t)
 	minStart := 0
 	minEnd := math.MaxInt32
@@ -17,15 +17,11 @@ func minWindow(s string, t string) string {
 	}
 
 	for j := 0; j < len(t); j++ {
-		if _, ok := charCount[t[j]]; ok {
-			charCount[t[j]]++
-		} else {
-			charCount[t[j]] = 1
-		}
+		charCount[t[j]]++
 	}
 
 	for j := 0; j < len(s); j++ {
-		if val, ok := charCount[s[j]]; ok && val > 0 {
+		if charCount[s[j]] > 0 {
 			targetCharsRemaining--
 		}
 		charCount[s[j]]--
@@ -33,7 +29,7 @@ func minWindow(s string, t string) string {
 		if targetCharsRemaining == 0 {
 			for {
 				charAtStart = s[i]
-				if val, _ := charCount[charAtStart]; val == 0 {
+				if charCount[charAtStart] == 0 {
 					break
 				}
 				charCount[charAtStart]++
