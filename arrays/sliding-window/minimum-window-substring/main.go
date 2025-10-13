@@ -5,35 +5,34 @@ import (
 )
 
 func minWindow(s string, t string) string {
-	m := len(s)
-	n := len(t)
-	charCount := map[string]int{}
-	targetCharsRemaining := n
-	minWindowArr := []int{0, math.MaxInt32}
+	charCount := map[byte]int{}
+	targetCharsRemaining := len(t)
+	minStart := 0
+	minEnd := math.MaxInt32
 	var i int
-	var charAtStart string
+	var charAtStart byte
 
-	if n > m {
+	if len(t) > len(s) {
 		return ""
 	}
 
-	for j := 0; j < n; j++ {
-		if _, ok := charCount[string(t[j])]; ok {
-			charCount[string(t[j])]++
+	for j := 0; j < len(t); j++ {
+		if _, ok := charCount[t[j]]; ok {
+			charCount[t[j]]++
 		} else {
-			charCount[string(t[j])] = 1
+			charCount[t[j]] = 1
 		}
 	}
 
 	for j := 0; j < len(s); j++ {
-		if val, ok := charCount[string(s[j])]; ok && val > 0 {
+		if val, ok := charCount[s[j]]; ok && val > 0 {
 			targetCharsRemaining--
 		}
-		charCount[string(s[j])]--
+		charCount[s[j]]--
 
 		if targetCharsRemaining == 0 {
 			for {
-				charAtStart = string(s[i])
+				charAtStart = s[i]
 				if val, _ := charCount[charAtStart]; val == 0 {
 					break
 				}
@@ -41,18 +40,19 @@ func minWindow(s string, t string) string {
 				i++
 			}
 
-			if j-i < minWindowArr[1]-minWindowArr[0] {
-				minWindowArr = []int{i, j}
+			if j-i < minEnd-minStart {
+				minStart = i
+				minEnd = j
 			}
-			charCount[string(s[i])]++
+			charCount[s[i]]++
 			targetCharsRemaining++
 			i++
 		}
 	}
 
-	if minWindowArr[1] > len(s) {
+	if minEnd > len(s) {
 		return ""
 	}
 
-	return s[minWindowArr[0] : minWindowArr[1]+1]
+	return s[minStart : minEnd+1]
 }
