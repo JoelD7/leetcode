@@ -6,10 +6,8 @@ import (
 
 func minWindow(s string, t string) string {
 	charCount := make(map[byte]int)
+	i, minStart, minEnd := 0, 0, math.MaxInt32
 	targetCharsRemaining := len(t)
-	minStart := 0
-	minEnd := math.MaxInt32
-	var i int
 	var charAtStart byte
 
 	if len(t) > len(s) {
@@ -40,6 +38,7 @@ func minWindow(s string, t string) string {
 				minStart = i
 				minEnd = j
 			}
+
 			charCount[s[i]]++
 			targetCharsRemaining++
 			i++
