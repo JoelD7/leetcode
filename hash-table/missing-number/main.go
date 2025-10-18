@@ -1,24 +1,13 @@
 package missing_number
 
-import (
-	"sort"
-)
-
 func missingNumber(nums []int) int {
-	sort.Ints(nums)
-	max := nums[len(nums)-1]
-	expected := 0
+	n := len(nums)
+	totalSum := (n * (n + 1)) / 2
 
+	numsSum := 0
 	for _, num := range nums {
-		if num != expected {
-			return expected
-		}
-		expected++
+		numsSum += num
 	}
 
-	if expected > max {
-		return expected
-	}
-
-	return 0
+	return totalSum - numsSum
 }

@@ -43,3 +43,9 @@ Given an array `nums` containing `n` distinct numbers in the range `[0, n]`, ret
     All the numbers of nums are unique.
 
 # Solution
+The approach is very simple:
+
+1. Use the **very well known** math formula to find the sum of `n` numbers, which is:
+   `(n * (n + 1)) / 2`
+2. Sum all the numbers of `nums`
+3. Return the difference between the first two steps
