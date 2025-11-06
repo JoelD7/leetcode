@@ -4,22 +4,23 @@ func combine(n int, k int) [][]int {
 	res := make([][]int, 0)
 	comb := make([]int, 0)
 
-	backtrack(1, n, k, &comb, &res)
+	res = backtrack(1, n, k, res, comb)
 	return res
 }
 
-func backtrack(start, n, k int, comb *[]int, res *[][]int) {
-	if len(*comb) == k {
-		combCopy := make([]int, len(*comb))
-		copy(combCopy, *comb)
-		*res = append(*res, combCopy)
-		return
+func backtrack(start, n, k int, res [][]int, comb []int) [][]int {
+	if len(comb) == k {
+		c := make([]int, len(comb))
+		copy(c, comb)
+		res = append(res, c)
+		return res
 	}
 
-	for num := start; num <= n; num++ {
-		*comb = append(*comb, num)
-		backtrack(num+1, n, k, comb, res)
-		combCopy := *comb
-		*comb = combCopy[:len(combCopy)-1]
+	for i := start; i <= n; i++ {
+		comb = append(comb, i)
+		res = backtrack(i+1, n, k, res, comb)
+		comb = comb[:len(comb)-1]
 	}
+
+	return res
 }
