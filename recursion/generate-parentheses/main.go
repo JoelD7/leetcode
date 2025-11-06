@@ -3,22 +3,24 @@ package generate_parentheses
 func generateParenthesis(n int) []string {
 	res := make([]string, 0)
 
-	recurse(0, 0, n, &res, "")
+	res = backtrack(0, 0, n, "", res)
 
 	return res
 }
 
-func recurse(open, closed, n int, res *[]string, s string) {
-	if open == closed && len(s) == n*2 {
-		*res = append(*res, s)
-		return
+func backtrack(open, closed, n int, s string, res []string) []string {
+	if open == closed && open+closed == n*2 {
+		res = append(res, s)
+		return res
 	}
 
 	if open < n {
-		recurse(open+1, closed, n, res, s+"(")
+		res = backtrack(open+1, closed, n, s+"(", res)
 	}
 
 	if closed < open {
-		recurse(open, closed+1, n, res, s+")")
+		res = backtrack(open, closed+1, n, s+")", res)
 	}
+
+	return res
 }
