@@ -37,5 +37,25 @@ The test cases are generated such that the number of unique combinations that su
     1 <= target <= 40
 
 # Solution
+### Variables
 
+- `res`. The list of all combinations.
+- `comb`. The current combination of candidates
+- `sum`. The sum of all the elements of `comb`
+- `candidate`. The current candidate we’re evaluating, i.e., `candidates[i]`.
+
+### Algorithm
+
+- Use a backtrack function that takes `comb`and `sum`.
+- Iterate though `candidates` and on each new iteration
+    1. Add `candidate` to `comb` and update`sum`
+    2. Call `backtrack`.
+        1. Check if the base case has been reached. The base is reached in two ways:
+            1. `sum == target`. In that case we add `comb` to `res` because we have a valid combination.
+            2. `sum > target`. We return without adding `comb` to `res` because this combination is not valid.
+    3. After the recursive call to `backtrack` returns, remove `candidate` from `comb` and `sum` in order to try with a new candidate.
+
+The loop begins at `start` because we want to ensure that past candidates don’t repeat themselves in the final solution. For example, for `candidates = [1,2,3]`, having combinations `[2,3],[3,2]`.
+
+The value of `start` will always be the index of the candidate we’re currently evaluating in the iteration. We do this because according to the problem’s constraints is possible for a same candidate to appear several times as a valid combination. For example, for `candidates = [2,3,6,7], target = 7` a valid combination is `[2,2,3]`.
  
