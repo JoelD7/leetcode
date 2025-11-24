@@ -9,9 +9,7 @@ func partition(s string) [][]string {
 
 func backtrack(s string, comb []string, res [][]string) [][]string {
 	if s == "" {
-		c := make([]string, len(comb))
-		copy(c, comb)
-		res = append(res, c)
+		res = append(res, append([]string(nil), comb...))
 		return res
 	}
 
