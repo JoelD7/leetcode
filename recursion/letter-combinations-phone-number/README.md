@@ -24,3 +24,28 @@ A mapping of digits to letters (just like on the telephone buttons) is given bel
     digits[i] is a digit in the range ['2', '9'].
 
 # Solution
+## Intuition
+- The problem is asking for combinations so this seems to be a backtracking problem
+- The length of `digits` is not constant, so using loops to form combinations is not optimal. A recursive approach is easier.
+- 
+
+## Variables
+- `ln`: hash table that maps digits to their letters
+- `res`: list of all the possible combinations. This is the return value of the function
+- `backtrack`: backtracking function
+- `comb`: current combination of letters
+
+## Algorithm in a nutshell
+1. Take a digit
+   2. Take a letter of a digit
+   3. Append that letter to a temporary variable `comb`
+   4. Call recursive function
+   5. Repeat for all letters
+6. Repeat for all digits
+
+## Implementation
+Looking at the algorithm one might think we need two loops to solve this problem. This is a naive mistake because the algorithm is recursive, so the recursion itself will take charge of one of the iterative aspects of the algorithm. Specifically, recursion will "iterate" over `digits`, while a loop will iterate over the letters of each digit. 
+
+We use an `index` variable to iterate over `digits`. On each recursive call we'll add 1 to `index` to change the digit we're evaluating. Inside the function we then create a loop to iterate over all the letters of the current digit, appending each one to `comb`. 
+
+Finally, when `index == len(digits)`(**base case**), we add `comb` to the list of combinations because only on this point we know we have formed a valid combination. Why? Because of the base case, i.e., we have processed all the digits of the input.
