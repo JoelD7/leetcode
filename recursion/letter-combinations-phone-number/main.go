@@ -1,37 +1,28 @@
 package letter_combinations_phone_number
 
 func letterCombinations(digits string) []string {
-	var comb string
-	ln := map[byte][]string{
-		'2': {"a", "b", "c"},
-		'3': {"d", "e", "f"},
-		'4': {"g", "h", "i"},
-		'5': {"j", "k", "l"},
-		'6': {"m", "n", "o"},
-		'7': {"p", "q", "r", "s"},
-		'8': {"t", "u", "v"},
-		'9': {"w", "x", "y", "z"},
+	ln := map[byte]string{
+		'2': "abc", '3': "def", '4': "ghi", '5': "jkl",
+		'6': "mno", '7': "pqrs", '8': "tuv", '9': "wxyz",
 	}
 
-	return backtrack(digits, comb, make([]string, 0), ln)
-}
+	res := make([]string, 0)
 
-func backtrack(digits, comb string, res []string, ln map[byte][]string) []string {
-	var letters []string
-	if digits == "" {
-		return res
-	}
+	var backtrack func(index int, digits, comb string)
 
-	for i := 0; i < len(digits); i++ {
-		letters = ln[digits[i]]
-
-		for j := 0; j < len(letters); j++ {
-			comb += letters[j]
-			res = backtrack(digits[i+1:], comb, res, ln)
+	backtrack = func(index int, digits, comb string) {
+		if index == len(digits) {
 			res = append(res, comb)
-			comb = comb[:len(comb)-1]
+			return
+		}
+
+		letters := ln[digits[index]]
+
+		for i := 0; i < len(letters); i++ {
+			backtrack(index+1, digits, comb+string(letters[i]))
 		}
 	}
 
+	backtrack(0, digits, "")
 	return res
 }
