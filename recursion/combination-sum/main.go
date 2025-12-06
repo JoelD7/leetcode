@@ -3,34 +3,26 @@ package combination_sum
 func combinationSum(candidates []int, target int) [][]int {
 	res := make([][]int, 0)
 	comb := make([]int, 0)
-	var sum int
 
-	res = backtrack(0, sum, target, candidates, comb, res)
+	var backtrack func(start, sum int)
 
-	return res
-}
+	backtrack = func(start, sum int) {
+		if sum > target {
+			return
+		}
 
-func backtrack(start, sum, target int, candidates, comb []int, res [][]int) [][]int {
-	if sum == target {
-		c := make([]int, len(comb))
-		copy(c, comb)
-		res = append(res, c)
-		return res
+		if sum == target {
+			res = append(res, append([]int(nil), comb...))
+			return
+		}
+
+		for i := start; i < len(candidates); i++ {
+			comb = append(comb, candidates[i])
+			backtrack(i, sum+candidates[i])
+			comb = comb[:len(comb)-1]
+		}
 	}
 
-	if sum > target {
-		return res
-	}
-
-	for i := start; i < len(candidates); i++ {
-		comb = append(comb, candidates[i])
-		sum += candidates[i]
-
-		res = backtrack(i, sum, target, candidates, comb, res)
-
-		comb = comb[:len(comb)-1]
-		sum -= candidates[i]
-	}
-
+	backtrack(0, 0)
 	return res
 }
