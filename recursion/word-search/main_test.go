@@ -53,4 +53,14 @@ func TestExists(t *testing.T) {
 
 		c.True(exist(board, "ba"))
 	})
+
+	t.Run(`board = [["C","A","A"],["A","A","A"],["B","C","D"]], word = "AAB"`, func(t *testing.T) {
+		board := [][]byte{
+			{'C', 'A', 'A'},
+			{'A', 'A', 'A'},
+			{'B', 'C', 'D'},
+		}
+
+		c.True(exist(board, "AAB"))
+	})
 }
