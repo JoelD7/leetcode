@@ -1,32 +1,32 @@
 package palindrome_partitioning
 
 func partition(s string) [][]string {
-	comb := make([]string, 0)
 	res := make([][]string, 0)
+	comb := make([]string, 0)
 
-	return backtrack(s, comb, res)
-}
+	var backtrack func(start int, str string)
 
-func backtrack(s string, comb []string, res [][]string) [][]string {
-	if s == "" {
-		res = append(res, append([]string(nil), comb...))
-		return res
-	}
+	backtrack = func(start int, str string) {
+		if str == "" {
+			res = append(res, append([]string{}, comb...))
+			return
+		}
 
-	for i := 1; i <= len(s); i++ {
-		if isPalindrome(s[:i]) {
-			comb = append(comb, s[:i])
-			res = backtrack(s[i:], comb, res)
-			comb = comb[:len(comb)-1]
+		for i := 0; i < len(str); i++ {
+			if isPalindrome(str[:i+1]) {
+				comb = append(comb, str[:i+1])
+				backtrack(i+1, str[i+1:])
+				comb = comb[:len(comb)-1]
+			}
 		}
 	}
 
+	backtrack(0, s)
 	return res
 }
 
 func isPalindrome(s string) bool {
-	i := 0
-	j := len(s) - 1
+	i, j := 0, len(s)-1
 
 	for i < j {
 		if s[i] != s[j] {
@@ -35,5 +35,6 @@ func isPalindrome(s string) bool {
 		i++
 		j--
 	}
+
 	return true
 }
