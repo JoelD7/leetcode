@@ -8,6 +8,10 @@ import (
 func TestPartition(t *testing.T) {
 	c := require.New(t)
 
+	t.Run("cdd", func(t *testing.T) {
+		c.Equal([][]string{{"c", "d", "d"}, {"c", "dd"}}, partition("cdd"))
+	})
+
 	t.Run("aab", func(t *testing.T) {
 		c.Equal([][]string{{"a", "a", "b"}, {"aa", "b"}}, partition("aab"))
 	})
