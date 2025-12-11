@@ -9,25 +9,24 @@ func subsetsWithDup(nums []int) [][]int {
 	comb := make([]int, 0)
 	sort.Ints(nums)
 
-	return backtrack(0, nums, comb, res)
-}
+	var backtrack = func(i int) {}
 
-func backtrack(i int, nums, comb []int, res [][]int) [][]int {
-	if i == len(nums) {
-		c := make([]int, len(comb))
-		copy(c, comb)
-		res = append(res, c)
-		return res
+	backtrack = func(i int) {
+		if i == len(nums) {
+			res = append(res, append([]int{}, comb...))
+			return
+		}
+
+		comb = append(comb, nums[i])
+		backtrack(i + 1)
+
+		comb = comb[:len(comb)-1]
+		for i < len(nums)-1 && nums[i] == nums[i+1] {
+			i++
+		}
+		backtrack(i + 1)
 	}
 
-	comb = append(comb, nums[i])
-	res = backtrack(i+1, nums, comb, res)
-
-	comb = comb[:len(comb)-1]
-
-	for i+1 < len(nums) && nums[i] == nums[i+1] {
-		i++
-	}
-
-	return backtrack(i+1, nums, comb, res)
+	backtrack(0)
+	return res
 }
