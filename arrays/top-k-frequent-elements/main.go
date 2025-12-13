@@ -1,12 +1,9 @@
 package top_k_frequent_elements
 
-import "sort"
+import (
+	"sort"
+)
 
-// Input: nums = [1,1,1,2,2,3], k = 2
-// Output: [1,2]
-// 1: 3
-// 2: 2
-// 3: 1
 func topKFrequent(nums []int, k int) []int {
 	freqByValue := map[int]int{}
 
