@@ -1,96 +1,75 @@
 package valid_sudoku
 
-// 1. Each row must contain the digits 1-9 without repetition.
-// 2. Each column must contain the digits 1-9 without repetition.
-// 3. Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
 func isValidSudoku(board [][]byte) bool {
-	rowMap := map[byte]struct{}{}
-	colMap := map[byte]struct{}{}
-	var rowVal byte
-	var colVal byte
-
-	//key(r+c)=cuadrant, value=digits in that cuadrant
-	tbtMap := map[string]map[byte]struct{}{
-		"00": {},
-		"01": {},
-		"02": {},
-		"10": {},
-		"11": {},
-		"12": {},
-		"20": {},
-		"21": {},
-		"22": {},
+	//Maps row number to found digits
+	rowDigits := map[int]map[byte]bool{
+		0: make(map[byte]bool),
+		1: make(map[byte]bool),
+		2: make(map[byte]bool),
+		3: make(map[byte]bool),
+		4: make(map[byte]bool),
+		5: make(map[byte]bool),
+		6: make(map[byte]bool),
+		7: make(map[byte]bool),
+		8: make(map[byte]bool),
 	}
 
-	for row := 0; row < 9; row++ {
-		rowMap = map[byte]struct{}{}
-		colMap = map[byte]struct{}{}
+	//Maps col number to found digits
+	colDigits := map[int]map[byte]bool{
+		0: make(map[byte]bool),
+		1: make(map[byte]bool),
+		2: make(map[byte]bool),
+		3: make(map[byte]bool),
+		4: make(map[byte]bool),
+		5: make(map[byte]bool),
+		6: make(map[byte]bool),
+		7: make(map[byte]bool),
+		8: make(map[byte]bool),
+	}
 
-		for col := 0; col < 9; col++ {
-			rowVal = board[row][col]
-			colVal = board[col][row]
+	subGridDigits := map[int]map[int]map[byte]bool{
+		0: {
+			0: make(map[byte]bool),
+			1: make(map[byte]bool),
+			2: make(map[byte]bool),
+		},
+		1: {
+			0: make(map[byte]bool),
+			1: make(map[byte]bool),
+			2: make(map[byte]bool),
+		},
+		2: {
+			0: make(map[byte]bool),
+			1: make(map[byte]bool),
+			2: make(map[byte]bool),
+		},
+	}
 
-			c := rune(rowVal)
-			if c >= '0' && c <= '9' {
-				_, ok := rowMap[rowVal]
-				if ok {
-					return false
-				}
-
-				rowMap[rowVal] = struct{}{}
-				cuadrant := getCuadrant(row, col)
-				_, ok = tbtMap[cuadrant][rowVal]
-				if ok {
-					return false
-				}
-
-				tbtMap[cuadrant][rowVal] = struct{}{}
-
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			if board[i][j] == '.' {
+				continue
 			}
 
-			c = rune(colVal)
-			if c >= '0' && c <= '9' {
-				_, ok := colMap[colVal]
-				if ok {
-					return false
-				}
-
-				colMap[colVal] = struct{}{}
+			if rowDigits[i][board[i][j]] {
+				return false
 			}
+
+			rowDigits[i][board[i][j]] = true
+
+			if colDigits[j][board[i][j]] {
+				return false
+			}
+
+			colDigits[j][board[i][j]] = true
+
+			if subGridDigits[i/3][j/3][board[i][j]] {
+				return false
+			}
+
+			subGridDigits[i/3][j/3][board[i][j]] = true
 		}
 	}
 
 	return true
-}
-
-func getCuadrant(r, c int) string {
-	var row, col string
-	rowDiff := r - 3
-	colDiff := c - 3
-
-	if rowDiff < 0 {
-		row = "0"
-	}
-
-	if rowDiff >= 0 && rowDiff <= 2 {
-		row = "1"
-	}
-
-	if rowDiff >= 3 && rowDiff <= 5 {
-		row = "2"
-	}
-
-	if colDiff < 0 {
-		col = "0"
-	}
-
-	if colDiff >= 0 && colDiff <= 2 {
-		col = "1"
-	}
-
-	if colDiff >= 3 && colDiff <= 5 {
-		col = "2"
-	}
-
-	return row + col
 }
