@@ -6,49 +6,43 @@ import (
 
 func threeSum(nums []int) [][]int {
 	sort.Ints(nums)
-	triplets := make([][]int, 0)
+	res := make([][]int, 0)
 
-	var l, r, cur, sum, lastL, lastR int
+	var k, j, sum int
 
 	for i := 0; i < len(nums)-1; i++ {
-		cur = nums[i]
-
-		if cur > 0 {
-			break
-		}
-
-		if i > 0 && cur == nums[i-1] {
+		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
 
-		l = i + 1
-		r = len(nums) - 1
+		k = i + 1
+		j = len(nums) - 1
 
-		for l < r {
-
-			sum = cur + nums[l] + nums[r]
+		for k < j {
+			sum = nums[i] + nums[k] + nums[j]
 
 			if sum == 0 {
-				triplets = append(triplets, []int{cur, nums[l], nums[r]})
+				res = append(res, []int{nums[i], nums[k], nums[j]})
+				k++
 
-				lastL = nums[l]
-				lastR = nums[r]
-
-				for l < r && nums[l] == lastL {
-					l++
+				for nums[k] == nums[k-1] && k < j {
+					k++
 				}
 
-				for l < r && nums[r] == lastR {
-					r--
-				}
+				continue
+			}
 
-			} else if sum > 0 {
-				r--
-			} else {
-				l++
+			if sum < 0 {
+				k++
+				continue
+			}
+
+			if sum > 0 {
+				j--
+				continue
 			}
 		}
 	}
 
-	return triplets
+	return res
 }

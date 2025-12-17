@@ -1,13 +1,29 @@
 package three_sum
 
 import (
-	"fmt"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestThreeSum(t *testing.T) {
 
-	fmt.Printf("Expected: [[-1,-1,2],[-1,0,1]], Got: %+v\n", threeSumRefresh([]int{-1, 0, 1, 2, -1, -4}))
-	fmt.Printf("Expected: [[0,0,0]], Got: %+v\n", threeSumRefresh([]int{0, 0, 0, 0}))
-	fmt.Printf("Expected: [[-1,0,1]], Got: %+v\n", threeSumRefresh([]int{1, -1, -1, 0}))
+	t.Run("nums = [-1,0,1,2,-1,-4]", func(t *testing.T) {
+		assert.ElementsMatch(t, threeSum([]int{-1, 0, 1, 2, -1, -4}), [][]int{{-1, -1, 2}, {-1, 0, 1}})
+	})
+
+	t.Run("nums = [0,1,1]", func(t *testing.T) {
+		assert.Empty(t, threeSum([]int{0, 1, 1}))
+	})
+
+	t.Run("nums = [0,0,0]", func(t *testing.T) {
+		assert.ElementsMatch(t, threeSum([]int{0, 0, 0}), [][]int{{0, 0, 0}})
+	})
+
+	t.Run("[0,0,0,0]", func(t *testing.T) {
+		assert.ElementsMatch(t, threeSum([]int{0, 0, 0, 0}), [][]int{{0, 0, 0}})
+	})
+
+	t.Run("[1,2,-2,-1]", func(t *testing.T) {
+		assert.ElementsMatch(t, threeSum([]int{1, 2, -2, -1}), [][]int{})
+	})
 }
