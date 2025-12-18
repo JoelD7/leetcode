@@ -72,5 +72,6 @@ of the lines: `w x h`
 ---
 Use two pointers: `l` and `r`. Find the max area by calculating it according to the aforementioned
 formula. That calculation requires `w` and `h`. The width is the distance between the pointers,
-the height is the smallest value of the two pointers. This is why the height should always point to
-the smallest value; we should move the correspoding pointer to match that condition. 
+the height is the smallest value of the two pointers, because if we choose the larger one, the water from the container will overflow(watch example 1). 
+
+**How do we know which pointer to move?** Move the index that points to the smallest height, because most likely you’ll form the max area with the one that has the largest height. So we want to keep that using that height as long as possible, at least until we find an even bigger one. 
