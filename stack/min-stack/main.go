@@ -1,88 +1,65 @@
 package min_stack
 
-/*
-Notes
-
-- Min
-	- Min is pointer to the minimum value
-	- on each push, update min if val < min
-*/
-
-type Node struct {
-	prev *Node
-	val  int
+type MinStack struct {
+	size int
+	head Node
 }
 
-type MinStack struct {
-	head     *Node
-	minStack *MinStack
-	length   int
+type Node struct {
+	val  int
+	min  int
+	next *Node
 }
 
 func Constructor() MinStack {
-	return MinStack{
-		head: nil,
-		minStack: &MinStack{
-			head:   nil,
-			length: 0,
-		},
-		length: 0,
-	}
+	return MinStack{}
 }
 
 func (this *MinStack) Push(val int) {
-	this.length++
-
-	if this.head == nil {
-		newHead := &Node{nil, val}
-		this.head = newHead
-
-		if this.minStack != nil {
-			this.minStack.Push(val)
+	if this.size == 0 {
+		this.size++
+		this.head = Node{
+			val: val,
+			min: val,
 		}
 
 		return
 	}
 
-	curHead := &Node{this.head.prev, this.head.val}
-	this.head.val = val
-	this.head.prev = curHead
-
-	if this.minStack != nil && val <= this.minStack.Top() {
-		this.minStack.Push(val)
+	this.size++
+	curHead := this.head
+	this.head = Node{
+		val:  val,
+		next: &curHead,
+		min:  getMin(curHead.min, val),
 	}
 }
 
 func (this *MinStack) Pop() {
-	if this.head == nil {
-		return
+	this.size--
+
+	var nextHead Node
+	if this.head.next != nil {
+		nextHead = *this.head.next
 	}
 
-	this.length--
-
-	curHead := &Node{this.head.prev, this.head.val}
-
-	if curHead.prev == nil {
-		this.head = nil
-	} else {
-		this.head = &Node{
-			prev: curHead.prev.prev,
-			val:  curHead.prev.val,
-		}
-	}
-
-	if this.minStack != nil && this.minStack.Top() == curHead.val {
-		this.minStack.Pop()
-	}
+	this.head = nextHead
 }
 
 func (this *MinStack) Top() int {
 	return this.head.val
 }
 
-// GetMin returns the minimum value in the stack without removing it.
 func (this *MinStack) GetMin() int {
-	return this.minStack.Top()
+	return this.head.min
+}
+
+func getMin(a, b int) int {
+	if a < b {
+		return a
+	}
+
+	return b
 }
 
 /**
