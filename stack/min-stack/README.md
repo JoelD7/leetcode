@@ -35,24 +35,11 @@ Example 1:
     minStack.getMin(); // return -2
 
 # Solution
-- Use a regular stack(called `stack` from now on) that holds another stack(`minStack`)
-as one of it's fields. 
-  - `minStack` is an auxiliary stack that will hold the minimum values
-  of `stack` in ascending order, where `minStack.top()` will be the `stack`'s current minimum
-  value.
-- On each `push` to `stack`, check if the new value is smaller than
-`minStack`'s top value. If it is, push to `minStack`, otherwise, do nothing. 
-- On each `pop`, check if `minStack`'s top value is the same as the `stack`'s top value. If
-it is, `pop` from `minStack` as well. 
-  - It doesn't matter if the min value is repeated because: 
-    1. we would have already added it to`minStack` in a previous `push`
-    2. the values of `minStack` are sorted, so `minStack` will always have the minimum
-    value
+From analyzing the problem we reach the conclusion that some sort of history of minimum elements must be created so that when minimum elements are popped out of the stack we can easily reference the “previous” minimum in `O(1)` time.
 
-## Why use an auxiliary stack?
-First of all, the problem description states that all operations should have an `O(1)`
-complexity. A naive approach might involve using an array to hold all the added values. However, this is a problem because after poping an item from `stack` we would have to update that array to eliminate the
-popped value, and also update the `min` value in case the poped value was the `min`. This is a `O(n)` operation.
+The solution is **encoding the minimum element history on each node**. Each node will keep track of the minimum element on the list *at the time* said node was added. Every time we add a new node to the stack, that node will save the minimum element *so far*.
 
-If we substitute that array with an embedded stack that contains all the minimum values `stack` has had in ascending order, the current minimum value will always be at the top. It's removal will be `O(1)` and there won't be any need
-of "updating" the `stack`'s minimum value.
+By making each node hold the minimum element at the time the node was added to the list, when an element is popped one out of two things can happen:
+
+1. If the top element was the minimum, both the minimum and the head are removed from the stack, and the new minimum is now the one that was before the minimum we just eliminated, which is already saved on the node after the removed head
+2. If the top element was not the minimum, the head is popped and the minimum remains the same because in that case the popped head and the node before would both have the same minimum, which is what we want.
