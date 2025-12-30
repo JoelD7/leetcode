@@ -28,14 +28,28 @@ Constraints:
     30 <= temperatures[i] <= 100
 
 # Solution
-On each iteration ask whether the next element(`next`) is bigger than the current one(`cur`). If it is, then the answer is just 1. That is the simplest case. When this doesn't happen, we will use a stack to store the indices of those elements in the hopes of finding another bigger element up a head. 
+The first interesting thing to note here is that for this problem there is no need to implemented a linked list stack, which involves considerably more code. An array is enough to do what we want here.
 
-**Why storing the indices and not the elements?**
+## Variables
+
+- `answer`: output of the program. We initialize it with zeroes on all positions to handle the default values indicated by the problem.
+- `stack`: the stack that holds the indices of temperatures. We deal with indices because temperatures can be repeated, and also what we care about in the context of the problem are *when* temperatures happen, in other words, positions in the array.
+- `temp`: current temperature being evaluated in the iteration.
+
+## Algorithm
+
+In a nutshell… Iterate over all the temperatures and continously add each index to a stack. On each temperature iteration, if the top of the stack is smaller than the current temperature, then we have found an answer for the top of the stack. Therefore, update the answers array of the index at the top of stack with the amount of days that passed between the top of stack and the current temperature. Pop the answered element out of stack and do the process again just in case the new top is also smaller than the current temperature.
+
+1. Iterate over all the temperatures and push every index to the stack.
+2. If the top of the stack references a temperature lower than the current one…
+    1. we calculate the difference between the index of the current temperature and the index of that stack element and set it in `answer`. The difference is how many days we “waited” before finding a larger temperature than the top of the stack. Why? Remember…
+        1. `index` = index at the top of the stack
+        2. `i` = index of the current temperature
+    2. we pop the top of the stack because we have found the answer for that element so we don’t care about it anymore.
+    3. we repeat this process **while** the stack has elements. We do this to process “pending” elements. In some iterations the top of stack won’t always be smaller than `temp`, so an accumulation of pending elements will happen. We do this while loop because there is the possibility that `temp` is larger than more than one pending element in the stack.
+3. We add the index of the current temperature to the stack so that it can be processed by the while loop in the following iterations. 
+
+### **Why storing the indices and not the elements?**
 1. There may be repeated elements
 2. What we want is to solve the question "how far away is X from Y?". This question can only be answered by keeping track of positions, i.e. indexes. 
 3. It's much, much easier to get an element from it's position than a position from it's element. 
-
-
-When `next > cur` we will also inspect the stack to check whether if `next` is also bigger than any other elements that are in the stack. We will only pop the elements that are smaller than `next`. In a further iteration there may be another "`next`" that is greater than the remaining elements in the stack.
-
-After we are done iterating over `temperatures` we should set the answer for all remaining elements in the stack to 0, because we never found any elements bigger than them. 
