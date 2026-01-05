@@ -8,8 +8,20 @@ import (
 func TestIsValid(t *testing.T) {
 	c := require.New(t)
 
-	c.True(isValid("{[]}"))
+	t.Run("]", func(t *testing.T) {
+		c.False(isValid("]"))
+	})
+
+	t.Run(")(){}", func(t *testing.T) {
+		c.False(isValid(")(){}"))
+	})
+
+	t.Run("([}}])", func(t *testing.T) {
+		c.False(isValid("([}}])"))
+	})
+
 	c.False(isValid("(("))
+	c.True(isValid("{[]}"))
 	c.True(isValid("()"))
 	c.True(isValid("()[]{}"))
 }
