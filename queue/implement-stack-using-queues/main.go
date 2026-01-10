@@ -1,4 +1,4 @@
-package queue
+package implement_stack_using_queues
 
 type Queue struct {
 	head *Node

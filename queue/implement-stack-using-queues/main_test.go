@@ -1,4 +1,4 @@
-package queue
+package implement_stack_using_queues
 
 import (
 	"github.com/stretchr/testify/assert"
