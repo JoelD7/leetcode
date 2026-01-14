@@ -11,111 +11,77 @@ type Node struct {
 	next *Node
 }
 
-func NewQueue() Queue {
-	return Queue{}
+func NewQueue() *Queue {
+	return &Queue{}
 }
 
-func (this *Queue) isEmpty() bool {
-	return this.size == 0
-}
-
-func (this *Queue) Enqueue(x int) {
-	oldTail := this.tail
-	this.tail = &Node{
-		val: x,
+func (q *Queue) Enqueue(val int) {
+	newNode := &Node{
+		val: val,
 	}
 
-	if this.isEmpty() {
-		this.head = this.tail
+	if q.head == nil {
+		q.head = newNode
+		q.tail = q.head
 	} else {
-		oldTail.next = this.tail
+		oldTail := q.tail
+		q.tail = newNode
+		oldTail.next = q.tail
 	}
 
-	this.size++
+	q.size++
 }
 
-func (this *Queue) Dequeue() int {
-	val := this.head.val
-	this.head = this.head.next
-	this.size--
+func (q *Queue) Dequeue() int {
+	if q.size == 0 {
+		return -1
+	}
+	val := q.head.val
+	q.head = q.head.next
+	q.size--
+
 	return val
 }
 
-func (this *Queue) Peek() int {
-	return this.head.val
+func (q *Queue) Peek() int {
+	return q.head.val
+}
+
+func (q *Queue) IsEmpty() bool {
+	return q.size == 0
 }
 
 type MyStack struct {
-	queue        Queue
-	reverseQueue Queue
-	size         int
+	queue *Queue
+	size  int
 }
 
 func Constructor() MyStack {
 	return MyStack{
-		queue:        NewQueue(),
-		reverseQueue: NewQueue(),
+		queue: NewQueue(),
 	}
 }
 
 func (this *MyStack) Push(x int) {
 	this.queue.Enqueue(x)
 
-	elements := make([]int, 0)
-	for !this.queue.isEmpty() {
-		elements = append(elements, this.queue.Dequeue())
+	size := this.queue.size
+	for i := 0; i < size-1; i++ {
+		this.queue.Enqueue(this.queue.Dequeue())
 	}
 
-	this.reverseQueue = NewQueue()
-
-	i := len(elements) - 1
-	j := 0
-	for i >= 0 && j < len(elements) {
-		this.reverseQueue.Enqueue(elements[i])
-		this.queue.Enqueue(elements[j])
-		i--
-		j++
-	}
 	this.size++
 }
 
 func (this *MyStack) Pop() int {
-	this.queue = NewQueue()
-	reversedElements := make([]int, 0)
-
-	val := this.reverseQueue.Dequeue()
-
-	for !this.reverseQueue.isEmpty() {
-		reversedElements = append(reversedElements, this.reverseQueue.Dequeue())
-	}
-
-	i := len(reversedElements) - 1
-	j := 0
-	for i >= 0 && j < len(reversedElements) {
-		this.queue.Enqueue(reversedElements[i])
-		this.reverseQueue.Enqueue(reversedElements[j])
-		i--
-		j++
-	}
-
 	this.size--
-
-	return val
+	return this.queue.Dequeue()
 }
 
 func (this *MyStack) Top() int {
-	return this.reverseQueue.Peek()
+	return this.queue.Peek()
 }
 
 func (this *MyStack) Empty() bool {
 	return this.size == 0
 }
-
-/**
- * Your MyStack object will be instantiated and called as such:
- * obj := Constructor();
- * obj.Push(x);
- * param_2 := obj.Pop();
- * param_3 := obj.Top();
- * param_4 := obj.Empty();
- */
