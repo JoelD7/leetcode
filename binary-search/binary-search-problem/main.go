@@ -1,4 +1,4 @@
-package binary_search
+package binary_search_problem
 
 func search(nums []int, target int) int {
 	min := 0
