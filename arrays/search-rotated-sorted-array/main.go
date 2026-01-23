@@ -1,26 +1,36 @@
 package search_rotated_sorted_array
 
 func search(nums []int, target int) int {
-	low := 0
-	high := len(nums) - 1
-	mid := 0
+	left, mid, right := 0, 0, len(nums)-1
 
-	for low <= high {
-		mid = (low + high) / 2
+	for left < right {
+		mid = left + (right-left)/2
+
+		if nums[mid] > nums[right] {
+			left = mid + 1
+		} else {
+			right = mid
+		}
+	}
+
+	rot := left
+	left, mid, right = 0, 0, len(nums)-1
+
+	if target >= nums[rot] && target <= nums[right] {
+		left = rot
+	} else {
+		right = rot
+	}
+
+	for left <= right {
+		mid = left + (right-left)/2
+
 		if nums[mid] == target {
 			return mid
-		} else if nums[mid] > target && nums[low] > target && nums[low] > nums[mid] {
-			high = mid - 1
-		} else if nums[mid] > target && nums[low] > target {
-			low = mid + 1
-		} else if nums[mid] > target {
-			high = mid - 1
-		} else if nums[mid] < target && nums[low] > nums[mid] && nums[low] > target {
-			low = mid + 1
-		} else if nums[mid] < target && nums[low] > nums[mid] {
-			high = mid - 1
 		} else if nums[mid] < target {
-			low = mid + 1
+			left = mid + 1
+		} else {
+			right = mid - 1
 		}
 	}
 
