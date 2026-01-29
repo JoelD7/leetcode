@@ -28,11 +28,21 @@ Return *the maximum profit you can achieve from this transaction*. If you cannot
     0 <= prices[i] <= 104
 
 # Solution
-To obtain the maximum profit we should buy the stock at the lowest possible price and sell it at the highest price. We emphasize "possible" because the selling price should be positioned after the buying price in the array.
+Use a sliding window with two pointers: `l`(buying price) and `r`(selling price). The loop will stop once we can’t find a new selling price.
 
-## Implementation
-The buying price(`buyPrice`) should be the lowest possible. For that reason, we iterate over the array updating `buyPrice` only when we find a lowest value than the current one. 
+While `l` keeps pointing to a smaller value than `r`, we update the current `maxProfit` if necessary. On each iteration we keep enlarging the window by increasing the value of `r`, to see if we can find a higher selling price that allow us to get a better profit. Once we find a smaller selling price(`r`) than the buying price, `l` will point to the current value of `r` and `r` will increase by 1. `l` should be now equal to `r` because we have already calculated the profit of all the values between `l` and `r`, so there is no point in increasing `l` just by 1(a much in-depth explanation about this logic bellow).
 
-On each iteration we subtract the current element(the potential `sellPrice`) from `buyPrice` and update the value of `profit`, a variable that will hold the maximum profit **so far**. If the result of that operation is larger than the current `profit`, we update it's value. 
+The key insight is always maintaining the left pointer(buying price) lower than the right pointer(selling price).
 
-After iterating over the whole array, we would have reached the maximum profit. 
+## Why do `left = right` instead of `left = left + 1`?
+
+While solving the problem one of the things I struggled to understand was why increasing `left` by 1 didn’t worked. Let’s analyze example 1 to explain this…
+
+```go
+For, 
+prices = [7, 1, 5, 3, 6, 4]
+left = 0 -> points to 7
+right = 1 -> points to 1
+```
+
+According to the solution’s logic, since `prices[right] < prices[left]` we should move `left` to the position of `right`, effectively ignoring a buying price of 7 “forever”. This is what I couldn’t understand. What if there is a another much higher price of 18 in the future, then our profit would be 11 instead of 5(the expected output of example 1), a much better profit. Well, the fact that we just found a lower price than `left`(the value of `right`)  means that we will obviously get a higher profit with this new value rather than the current value of `left` because we just found a lower buying price. Following the hypothetical future price of 18, our **profit would be 17(18 - 1) instead of 11(18 - 7)**. **A lower buying price = higher profit OBVIOUSLY!**
