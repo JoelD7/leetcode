@@ -1,24 +1,23 @@
 package main
 
 func lengthOfLongestSubstring(s string) int {
-	table := make(map[byte]bool)
-	l, r, maxLength := 0, 0, 0
-	isDuplicated := false
+	set := make(map[byte]bool)
+	left, right, maxLength := 0, 0, 0
+	var isDuplicated bool
 
-	for r < len(s) {
-		_, isDuplicated = table[s[r]]
-		if isDuplicated {
-			l++
-			r = l
-			table = map[byte]bool{}
-		} else {
-			if (r-l)+1 > maxLength {
-				maxLength = r - l + 1
-			}
-			table[s[r]] = true
-			r++
+	for right < len(s) {
+		_, isDuplicated = set[s[right]]
+		for isDuplicated {
+			delete(set, s[left])
+			left++
+			_, isDuplicated = set[s[right]]
 		}
 
+		set[s[right]] = true
+		if right-left+1 > maxLength {
+			maxLength = right - left + 1
+		}
+		right++
 	}
 
 	return maxLength
