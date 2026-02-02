@@ -23,6 +23,14 @@ func TestCheckInclusion(t *testing.T) {
 		assert.True(t, checkInclusion("abc", "bbbca"))
 	})
 
+	t.Run("Test case 3", func(t *testing.T) {
+		assert.False(t, checkInclusion("sea", "ate"))
+	})
+
+	t.Run("Test case 4", func(t *testing.T) {
+		assert.True(t, checkInclusion("abc", "defabc"))
+	})
+
 	t.Run("Very long input", func(t *testing.T) {
 		s1 := "trfhcbogglim"
 		s2 := "amwfpqwfwkarvhfcisywzaahtbdbuicxmjseeoudwfcdxetbmacayfikolbdxkocezhalfhxabwvuddcyazwiqiwefgolzvrpdxcuskps" +

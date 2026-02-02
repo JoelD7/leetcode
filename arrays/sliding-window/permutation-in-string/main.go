@@ -1,53 +1,41 @@
 package main
 
 func checkInclusion(s1 string, s2 string) bool {
-	//assumption
 	if len(s2) < len(s1) {
 		return false
 	}
 
-	createMapCopy := func(mapToCopy map[byte]int) map[byte]int {
-		mapCopy := make(map[byte]int)
-
-		for k, v := range mapToCopy {
-			mapCopy[k] = v
+	var l, r int
+	freqS1 := make([]byte, 26)
+	freqS2 := make([]byte, 26)
+	areArraysEqual := func(a, b []byte) bool {
+		for i := 0; i < 26; i++ {
+			if a[i] != b[i] {
+				return false
+			}
 		}
-
-		return mapCopy
+		return true
 	}
-
-	l, r, freq := 0, 0, 0
-	exists := false
-	freqTable := make(map[byte]int)
-	freqTableCopy := make(map[byte]int)
 
 	for i := 0; i < len(s1); i++ {
-		freqTable[s1[i]]++
-		freqTableCopy[s1[i]]++
+		freqS1[s1[i]-'a']++
 	}
 
-	//not sure about this condition
 	for r < len(s2) {
-		freq, exists = freqTable[s2[r]]
-		if !exists {
-			r = l + 1
-			l = r
-			freqTable = createMapCopy(freqTableCopy)
-			continue
-		}
+		freqS2[s2[r]-'a']++
 
-		if freq == 1 {
-			//We have exhausted all frequencies of this character
-			delete(freqTable, s2[r])
-		} else {
-			freqTable[s2[r]]--
-		}
-
-		if r-l+1 == len(s1) {
+		if r-l+1 == len(s1) && areArraysEqual(freqS1, freqS2) {
 			return true
 		}
 
-		r++
+		if r-l+1 < len(s1) {
+			r++
+		} else {
+			freqS2[s2[l]-'a']--
+			l++
+			r++
+		}
+
 	}
 
 	return false
