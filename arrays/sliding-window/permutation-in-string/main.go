@@ -5,7 +5,7 @@ func checkInclusion(s1 string, s2 string) bool {
 		return false
 	}
 
-	var l, r int
+	var start, end int
 	freqS1 := make([]byte, 26)
 	freqS2 := make([]byte, 26)
 	areArraysEqual := func(a, b []byte) bool {
@@ -21,19 +21,19 @@ func checkInclusion(s1 string, s2 string) bool {
 		freqS1[s1[i]-'a']++
 	}
 
-	for r < len(s2) {
-		freqS2[s2[r]-'a']++
+	for end < len(s2) {
+		freqS2[s2[end]-'a']++
 
-		if r-l+1 == len(s1) && areArraysEqual(freqS1, freqS2) {
+		if end-start+1 == len(s1) && areArraysEqual(freqS1, freqS2) {
 			return true
 		}
 
-		if r-l+1 < len(s1) {
-			r++
+		if end-start+1 < len(s1) {
+			end++
 		} else {
-			freqS2[s2[l]-'a']--
-			l++
-			r++
+			freqS2[s2[start]-'a']--
+			start++
+			end++
 		}
 
 	}
