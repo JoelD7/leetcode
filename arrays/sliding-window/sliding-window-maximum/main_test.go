@@ -17,4 +17,8 @@ func TestMaxSlidingWindow(t *testing.T) {
 	t.Run("nums = 1, k = 1", func(t *testing.T) {
 		assert.Equal(t, []int{1}, maxSlidingWindow([]int{1}, 1))
 	})
+
+	t.Run("nums = 1,-1, k = 1", func(t *testing.T) {
+		assert.Equal(t, []int{1, -1}, maxSlidingWindow([]int{1, -1}, 1))
+	})
 }

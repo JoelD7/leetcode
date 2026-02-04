@@ -4,26 +4,78 @@ import (
 	"math"
 )
 
-func maxSlidingWindow(nums []int, k int) []int {
-	l, r := 0, k
-	results := make([]int, 0)
+type Queue struct {
+	head *Node
+	tail *Node
+	size int
+}
 
-	getMax := func(arr []int) int {
-		max := math.MinInt32
+type Node struct {
+	val  int
+	next *Node
+}
 
-		for _, val := range arr {
-			if val > max {
-				max = val
-			}
-		}
+func NewQueue() Queue {
+	return Queue{}
+}
 
-		return max
+func (this *Queue) isEmpty() bool {
+	return this.size == 0
+}
+
+func (this *Queue) Enqueue(x int) {
+	oldTail := this.tail
+	this.tail = &Node{
+		val: x,
 	}
 
-	for r <= len(nums) {
-		results = append(results, getMax(nums[l:r]))
-		l++
-		r++
+	if this.isEmpty() {
+		this.head = this.tail
+	} else {
+		oldTail.next = this.tail
+	}
+
+	this.size++
+}
+
+func (this *Queue) Dequeue() int {
+	if this.isEmpty() {
+		return -1
+	}
+
+	val := this.head.val
+	this.head = this.head.next
+	this.size--
+
+	return val
+}
+
+func (this *Queue) Peek() int {
+	return this.head.val
+}
+
+func maxSlidingWindow(nums []int, k int) []int {
+	results := make([]int, 0)
+	max := math.MinInt32
+
+	queue := NewQueue()
+
+	for i := 0; i < k; i++ {
+		queue.Enqueue(nums[i])
+
+		if nums[i] > max {
+			max = nums[i]
+		}
+	}
+	results = append(results, max)
+
+	for i := k; i < len(nums); i++ {
+		queue.Dequeue()
+		queue.Enqueue(nums[i])
+		if nums[i] > max {
+			max = nums[i]
+		}
+		results = append(results, max)
 	}
 
 	return results
