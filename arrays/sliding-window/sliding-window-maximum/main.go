@@ -7,17 +7,12 @@ type Deque struct {
 }
 
 type Node struct {
-	val  Item
+	val  int
 	next *Node
 	prev *Node
 }
 
-type Item struct {
-	val   int
-	index int
-}
-
-func NewQueue() Deque {
+func NewDeque() Deque {
 	return Deque{}
 }
 
@@ -25,7 +20,20 @@ func (this *Deque) isEmpty() bool {
 	return this.size == 0
 }
 
-func (this *Deque) PushBack(x Item) {
+func (this *Deque) PushFront(x int) {
+	oldHead := this.head
+
+	this.head = &Node{
+		val:  x,
+		next: oldHead,
+	}
+
+	if oldHead != nil {
+		oldHead.prev = this.head
+	}
+}
+
+func (this *Deque) PushBack(x int) {
 	oldTail := this.tail
 	this.tail = &Node{
 		val:  x,
@@ -41,9 +49,9 @@ func (this *Deque) PushBack(x Item) {
 	this.size++
 }
 
-func (this *Deque) PopFront() Item {
+func (this *Deque) PopFront() int {
 	if this.isEmpty() {
-		return Item{}
+		return -1
 	}
 
 	val := this.head.val
@@ -57,9 +65,9 @@ func (this *Deque) PopFront() Item {
 	return val
 }
 
-func (this *Deque) PopBack() Item {
+func (this *Deque) PopBack() int {
 	if this.isEmpty() {
-		return Item{}
+		return -1
 	}
 
 	val := this.tail.val
@@ -72,46 +80,31 @@ func (this *Deque) PopBack() Item {
 	return val
 }
 
-func (this *Deque) Front() Item {
+func (this *Deque) Front() int {
 	return this.head.val
 }
 
-func (this *Deque) Back() Item {
+func (this *Deque) Back() int {
 	return this.tail.val
 }
 
 func maxSlidingWindow(nums []int, k int) []int {
 	results := make([]int, 0)
-	queue := NewQueue()
-	var l, r int
-	var cur Item
+	q := NewDeque()
 
-	for i := 0; i <= len(nums)-k; i++ {
-		l = i
-		r = i + k
-		for j := l; j < r; j++ {
-			cur = Item{
-				val:   nums[j],
-				index: j,
-			}
-
-			if queue.isEmpty() {
-				queue.PushBack(cur)
-				continue
-			}
-
-			for !queue.isEmpty() && queue.Back().val < cur.val {
-				queue.PopBack()
-			}
-
-			queue.PushBack(cur)
+	for i := 0; i < len(nums); i++ {
+		for !q.isEmpty() && q.Front() < i-k+1 {
+			q.PopFront()
 		}
 
-		for queue.Front().index < l {
-			queue.PopFront()
+		for !q.isEmpty() && nums[q.Back()] < nums[i] {
+			q.PopBack()
 		}
 
-		results = append(results, queue.PopFront().val)
+		q.PushBack(i)
+		if i >= k-1 {
+			results = append(results, nums[q.Front()])
+		}
 	}
 
 	return results
