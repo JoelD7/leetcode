@@ -1,29 +1,27 @@
 package longest_repeating_char_replacement
 
 func characterReplacement(s string, k int) int {
-	freq := make(map[byte]int)
+	freqMap := make([]int, 26)
 	max := func(a, b int) int {
 		if a > b {
 			return a
 		}
 		return b
 	}
+	var maxLen, mostFreq, l, r, charsNeedToChange int
 
-	var i, maxFreq, charsNeedChange, curLen, maxLen int
+	for r < len(s) {
+		freqMap[s[r]-'A']++
+		mostFreq = max(mostFreq, freqMap[s[r]-'A'])
 
-	for j := 0; j < len(s); j++ {
-		curLen = j - i + 1
-
-		freq[s[j]]++
-		maxFreq = max(maxFreq, freq[s[j]])
-		charsNeedChange = curLen - maxFreq
-
-		if charsNeedChange > k {
-			freq[s[i]]--
-			i++
+		charsNeedToChange = (r - l + 1) - mostFreq
+		if charsNeedToChange > k {
+			freqMap[s[l]-'A']--
+			l++
 		}
 
-		maxLen = max(maxLen, j-i+1)
+		maxLen = max(maxLen, r-l+1)
+		r++
 	}
 
 	return maxLen
