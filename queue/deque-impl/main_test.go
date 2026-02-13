@@ -10,7 +10,7 @@ func TestDeque(t *testing.T) {
 
 	t.Run("New Deque is empty", func(t *testing.T) {
 		d := NewDeque()
-		assert.True(t, d.isEmpty(), "New deque should be empty")
+		assert.True(t, d.IsEmpty(), "New deque should be empty")
 		assert.Equal(t, 0, d.size, "New deque size should be 0")
 	})
 
@@ -20,14 +20,14 @@ func TestDeque(t *testing.T) {
 		d.PushBack(10)
 		d.PushBack(20)
 
-		assert.False(t, d.isEmpty(), "Deque should not be empty")
+		assert.False(t, d.IsEmpty(), "Deque should not be empty")
 		assert.Equal(t, 2, d.size, "Size should be 2")
 		assert.Equal(t, 20, d.Back(), "Back element should be 20")
 
 		assert.Equal(t, 20, d.PopBack(), "First PopBack should return 20")
 		assert.Equal(t, 10, d.PopBack(), "Second PopBack should return 10")
 
-		assert.True(t, d.isEmpty(), "Deque should be empty after popping all elements")
+		assert.True(t, d.IsEmpty(), "Deque should be empty after popping all elements")
 	})
 
 	t.Run("PushFront and PopFront", func(t *testing.T) {
@@ -41,7 +41,7 @@ func TestDeque(t *testing.T) {
 		assert.Equal(t, 20, d.PopFront(), "First PopFront should return 20")
 		assert.Equal(t, 10, d.PopFront(), "Second PopFront should return 10")
 
-		assert.True(t, d.isEmpty(), "Deque should be empty")
+		assert.True(t, d.IsEmpty(), "Deque should be empty")
 	})
 
 	t.Run("Queue Behavior (PushBack -> PopFront)", func(t *testing.T) {

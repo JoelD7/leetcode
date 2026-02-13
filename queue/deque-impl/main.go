@@ -1,5 +1,15 @@
 package main
 
+type DoublyEndedQueue interface {
+	IsEmpty() bool
+	PushFront(x int)
+	PushBack(x int)
+	PopFront() int
+	PopBack() int
+	Front() int
+	Back() int
+}
+
 type Deque struct {
 	head *Node
 	tail *Node
@@ -16,7 +26,7 @@ func NewDeque() Deque {
 	return Deque{}
 }
 
-func (this *Deque) isEmpty() bool {
+func (this *Deque) IsEmpty() bool {
 	return this.size == 0
 }
 
@@ -44,7 +54,7 @@ func (this *Deque) PushBack(x int) {
 		prev: oldTail,
 	}
 
-	if this.isEmpty() {
+	if this.IsEmpty() {
 		this.head = this.tail
 	} else {
 		oldTail.next = this.tail
@@ -54,7 +64,7 @@ func (this *Deque) PushBack(x int) {
 }
 
 func (this *Deque) PopFront() int {
-	if this.isEmpty() {
+	if this.IsEmpty() {
 		return -1
 	}
 
@@ -70,7 +80,7 @@ func (this *Deque) PopFront() int {
 }
 
 func (this *Deque) PopBack() int {
-	if this.isEmpty() {
+	if this.IsEmpty() {
 		return -1
 	}
 
