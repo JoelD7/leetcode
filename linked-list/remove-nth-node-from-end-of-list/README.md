@@ -28,3 +28,15 @@ Given the head of a linked list, remove the nth node from the end of the list an
     1 <= sz <= 30
     0 <= Node.val <= 100
     1 <= n <= sz
+
+# Solution
+### In a nutshell
+
+Use two pointers, `left` and `right`. Move `right` `n` places, then move both pointers at the same time until `right` is `nil`. At that point, `left` will be at the $n^{th}$ node from the end.
+
+### Implementation
+
+1. Move `right` `n` places
+2. If `right` is nil right after moving it `n` places, that means `left` is already the $n^{th}$ from the end, so we remove it by equating the `left` pointer to the next node.
+3. Move both pointers at the same time until `right` is `nil`. At that point, `left` will be at the $n^{th}$ node from the end. The removal of `left` is done by connecting the previous node of `left` with the next one.
+    1. Keep track of `prevLeft` to properly remove `left` without losing the rest of the list.
