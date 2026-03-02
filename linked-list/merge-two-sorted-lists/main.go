@@ -11,6 +11,22 @@ func NewListNode(val int) *ListNode {
 	}
 }
 
+func BuildList(vals ...int) *ListNode {
+	if len(vals) == 0 {
+		return nil
+	}
+
+	head := NewListNode(vals[0])
+	current := head
+
+	for i := 1; i < len(vals); i++ {
+		current.Next = NewListNode(vals[i])
+		current = current.Next
+	}
+
+	return head
+}
+
 func SetNext(val int, l *ListNode) *ListNode {
 	next := &ListNode{
 		Val: val,
