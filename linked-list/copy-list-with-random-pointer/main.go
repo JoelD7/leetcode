@@ -22,13 +22,13 @@ func copyRandomList(head *Node) *Node {
 		og = next
 	}
 
-	og = head
-	for og != nil {
-		if og.Random != nil {
-			og.Next.Random = og.Random.Next
+	cur := head
+	for cur != nil {
+		if cur.Random != nil {
+			cur.Next.Random = cur.Random.Next
 		}
 
-		og = og.Next.Next
+		cur = cur.Next.Next
 	}
 
 	og = head
