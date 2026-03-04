@@ -6,19 +6,19 @@ type ListNode struct {
 }
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	var take, sum int
+	var carry, sum int
 	resHead := &ListNode{0, nil}
 	curRes := resHead
 
 	for l1 != nil && l2 != nil {
-		sum = l1.Val + l2.Val + take
+		sum = l1.Val + l2.Val + carry
 
 		if sum >= 10 {
-			take = sum / 10
+			carry = sum / 10
 			curRes.Val = sum % 10
 		} else {
 			curRes.Val = sum
-			take = 0
+			carry = 0
 		}
 
 		if l1.Next != nil || l2.Next != nil {
@@ -39,14 +39,14 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 
 	for rem != nil {
-		sum = rem.Val + take
+		sum = rem.Val + carry
 
 		if sum >= 10 {
-			take = sum / 10
+			carry = sum / 10
 			curRes.Val = sum % 10
 		} else {
 			curRes.Val = sum
-			take = 0
+			carry = 0
 		}
 
 		if rem.Next != nil {
@@ -60,13 +60,13 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		rem = rem.Next
 	}
 
-	if take > 0 {
+	if carry > 0 {
 		curRes.Next = &ListNode{
 			Val:  0,
 			Next: nil,
 		}
 		curRes = curRes.Next
-		curRes.Val = take
+		curRes.Val = carry
 	}
 
 	return resHead
