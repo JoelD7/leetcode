@@ -1,14 +1,18 @@
-package utils
+package main
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import (
+	"testing"
 
-func NewListNode(val int) *ListNode {
-	return &ListNode{
-		Val: val,
-	}
+	"github.com/stretchr/testify/assert"
+)
+
+func TestAddTwoNumbers(t *testing.T) {
+	t.Run("l1 = [5], l2 = [5]", func(t *testing.T) {
+		l1 := BuildList(5)
+		l2 := BuildList(5)
+
+		assert.Equal(t, []int{0, 1}, listToArray(addTwoNumbers(l1, l2)))
+	})
 }
 
 func BuildList(vals ...int) *ListNode {
@@ -25,6 +29,12 @@ func BuildList(vals ...int) *ListNode {
 	}
 
 	return head
+}
+
+func NewListNode(val int) *ListNode {
+	return &ListNode{
+		Val: val,
+	}
 }
 
 func listToArray(list *ListNode) []int {
