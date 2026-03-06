@@ -5,7 +5,7 @@ type LRUCache struct {
 	size  int
 	head  *Node
 	tail  *Node
-	table map[int]int
+	table map[int]*Node
 }
 
 type Node struct {
@@ -16,72 +16,80 @@ type Node struct {
 }
 
 func Constructor(capacity int) LRUCache {
+	head := &Node{prev: nil}
+	tail := &Node{next: nil}
+
+	head.next = tail
+	tail.prev = head
+
 	return LRUCache{
 		cap:   capacity,
-		table: make(map[int]int),
+		table: make(map[int]*Node),
+		head:  head,
+		tail:  tail,
 	}
 }
 
 func (this *LRUCache) Get(key int) int {
-	val, ok := this.table[key]
+	node, ok := this.table[key]
 	if !ok {
 		return -1
 	}
 
-	this.addNodeToList(key, val)
+	this.moveToHead(node)
 
-	return val
+	return node.value
 }
 
-func (this *LRUCache) addNodeToList(key, val int) {
-	if this.head == nil {
-		this.head = &Node{
-			key:   key,
-			value: val,
-		}
-		this.tail = this.head
-	} else {
-		prevTail := this.tail
-		newNode := &Node{
-			key:   key,
-			value: val,
-			prev:  prevTail,
-		}
-		prevTail.next = newNode
-		this.tail = newNode
-	}
+func (this *LRUCache) addToHead(node *Node) {
+	node.prev = this.head
+	node.next = this.head.next
+
+	this.head.next = node
+	this.head.next.prev = node
+}
+
+func (this *LRUCache) removeNode(node *Node) {
+	node.prev.next = node.next
+	node.next.prev = node.prev
+}
+
+func (this *LRUCache) moveToHead(node *Node) {
+	this.removeNode(node)
+	this.addToHead(node)
+}
+
+func (this *LRUCache) removeTail() *Node {
+	tail := this.tail.prev
+	this.removeNode(tail)
+	return tail
 }
 
 func (this *LRUCache) Put(key int, value int) {
+	newNode := &Node{
+		key:   key,
+		value: value,
+	}
+
 	if this.size < this.cap {
 		this.size++
-		this.table[key] = value
-		this.addNodeToList(key, value)
+		this.table[key] = newNode
+		this.addToHead(newNode)
 		return
 	}
 
-	count := 0
-	cur := this.tail
-	visited := make(map[int]bool)
+	node := this.table[key]
 
-	for count < this.size-1 {
-		ok := visited[cur.key]
-		if ok {
-			//This shouldn't produce nil pointer errors
-			cur.prev.next = cur.next
-			cur = cur.prev
-			continue
-		}
+	//New node
+	if node == nil {
+		tail := this.removeTail()
+		delete(this.table, tail.key)
+		this.addToHead(newNode)
 
-		visited[cur.key] = true
-		cur = cur.prev
-		count++
+		//Updating existing node
+	} else {
+		this.moveToHead(node)
 	}
-
-	this.head = cur.next
-
-	this.table[key] = value
-	this.addNodeToList(key, value)
 }
 
 /**
