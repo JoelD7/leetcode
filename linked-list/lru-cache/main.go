@@ -45,8 +45,8 @@ func (this *LRUCache) addToHead(node *Node) {
 	node.prev = this.head
 	node.next = this.head.next
 
-	this.head.next = node
 	this.head.next.prev = node
+	this.head.next = node
 }
 
 func (this *LRUCache) removeNode(node *Node) {
@@ -66,35 +66,24 @@ func (this *LRUCache) removeTail() *Node {
 }
 
 func (this *LRUCache) Put(key int, value int) {
+	if node, exists := this.table[key]; exists {
+		node.value = value
+		this.moveToHead(node)
+		return
+	}
+
 	newNode := &Node{
 		key:   key,
 		value: value,
 	}
 
-	if this.size < this.cap {
-		this.size++
-		this.table[key] = newNode
-		this.addToHead(newNode)
-		return
-	}
+	this.table[key] = newNode
+	this.addToHead(newNode)
+	this.size++
 
-	node := this.table[key]
-
-	//New node
-	if node == nil {
+	if this.size > this.cap {
 		tail := this.removeTail()
 		delete(this.table, tail.key)
-		this.addToHead(newNode)
-
-		//Updating existing node
-	} else {
-		this.moveToHead(node)
+		this.size--
 	}
 }
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * obj := Constructor(capacity);
- * param_1 := obj.Get(key);
- * obj.Put(key,value);
- */
