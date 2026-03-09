@@ -27,14 +27,6 @@ func BuildList(vals ...int) *ListNode {
 	return head
 }
 
-func SetNext(val int, l *ListNode) *ListNode {
-	next := &ListNode{
-		Val: val,
-	}
-	l.Next = next
-	return next
-}
-
 func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	if list1 == nil {
 		return list2
