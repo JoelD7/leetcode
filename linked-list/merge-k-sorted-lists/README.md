@@ -94,7 +94,7 @@ This problem has the peculiarity of having a brute force implementation that has
 
 We can obviously do better than that.
 
-The problem can be solved by iteratively taking two lists out of `lists`, merging them together using the same solution as the [Merge Two Sorted Lists](../linked-list/merge-two-sorted-lists/README.md) problem, appending the result to the end of `lists`, and removing those two input lists from `lists`.
+The problem can be solved by iteratively taking two lists out of `lists`, merging them together using the same solution as the [Merge Two Sorted Lists](../merge-two-sorted-lists/README.md) problem, appending the result to the end of `lists`, and removing those two input lists from `lists`.
 
 On each iteration we’ll have a shorter and shorter `lists` array.
 
