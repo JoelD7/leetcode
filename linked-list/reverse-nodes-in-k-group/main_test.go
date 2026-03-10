@@ -10,7 +10,7 @@ func TestReverseKGroup(t *testing.T) {
 	t.Run("head = [1,2,3,4,5], k = 2", func(t *testing.T) {
 		list := BuildList(1, 2, 3, 4, 5)
 
-		assert.Equal(t, []int{2, 1, 4, 3, 5}, reverseKGroup(list, 2))
+		assert.Equal(t, []int{2, 1, 4, 3, 5}, listToArray(reverseKGroup(list, 2)))
 	})
 }
 
