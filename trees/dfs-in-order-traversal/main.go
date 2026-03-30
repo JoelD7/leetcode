@@ -4,7 +4,7 @@ import (
 	"github.com/JoelD7/leetcode/trees/utils"
 )
 
-func inOrderTraversalRecursive(root *utils.BinaryNode) []int {
+func inOrderTraversalRecursive(root *utils.TreeNode) []int {
 	var result []int
 
 	if root == nil {
@@ -16,7 +16,7 @@ func inOrderTraversalRecursive(root *utils.BinaryNode) []int {
 	return result
 }
 
-func recurse(node *utils.BinaryNode, result *[]int) {
+func recurse(node *utils.TreeNode, result *[]int) {
 	if node == nil {
 		return
 	}
@@ -34,7 +34,7 @@ type Stack struct {
 }
 
 type Node struct {
-	val  *utils.BinaryNode
+	val  *utils.TreeNode
 	next *Node
 }
 
@@ -42,7 +42,7 @@ func NewStack() *Stack {
 	return &Stack{}
 }
 
-func (s *Stack) Push(val *utils.BinaryNode) {
+func (s *Stack) Push(val *utils.TreeNode) {
 	s.size++
 
 	node := &Node{
@@ -58,7 +58,7 @@ func (s *Stack) Push(val *utils.BinaryNode) {
 	}
 }
 
-func (s *Stack) Pop() *utils.BinaryNode {
+func (s *Stack) Pop() *utils.TreeNode {
 	s.size--
 	if s.head == nil {
 		return nil
@@ -69,7 +69,7 @@ func (s *Stack) Pop() *utils.BinaryNode {
 	return val
 }
 
-func inOrderTraversalIterative(root *utils.BinaryNode) []int {
+func inOrderTraversalIterative(root *utils.TreeNode) []int {
 	var result []int
 	stack := NewStack()
 	cur := root

@@ -1,29 +1,27 @@
-package utils
+package main
 
 import (
 	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
+func TestDiameterOfBinaryTree(t *testing.T) {
+	t.Run("Example 1", func(t *testing.T) {
+		//[1,2,3,4,5]
+		root := BuildTree([]*int{Ptr(1), Ptr(2), Ptr(3), Ptr(4), Ptr(5)})
+		assert.Equal(t, 3, diameterOfBinaryTree(root))
+	})
+
+	t.Run("Test case 2", func(t *testing.T) {
+		//[3,1,null,null,2]
+		root := BuildTree([]*int{Ptr(3), Ptr(1), nil, nil, Ptr(2)})
+		root.Print()
+		assert.Equal(t, 2, diameterOfBinaryTree(root))
+	})
 }
 
-/*
-	BuildTree takes a level-order slice where nil represents missing nodes
-
-	How to build trees?
-	1. *Read level-by-level*: Write down the nodes from top to bottom, reading each row from left to right.
-
-	2. *Record nil for missing children of existing nodes*: If a node exists but is missing a left or right child, you
-		must put a nil in the array.
-
-	3. *Ignore children of nil nodes*: If you put a nil in the array, do not write nils for its imaginary children on
-		the next row. The queue naturally skips them.
-
-*
-*/
 func BuildTree(values []*int) *TreeNode {
 	if len(values) == 0 || values[0] == nil {
 		return nil
@@ -54,7 +52,8 @@ func BuildTree(values []*int) *TreeNode {
 	return root
 }
 
-// Print outputs the tree to the console starting from the root.
+func Ptr(i int) *int { return &i }
+
 func (n *TreeNode) Print() {
 	if n == nil {
 		fmt.Println("<empty tree>")
@@ -94,5 +93,3 @@ func printSubTree(node *TreeNode, prefix string, isLeft bool) {
 	printSubTree(node.Left, childPrefix, true)
 	printSubTree(node.Right, childPrefix, false)
 }
-
-func Ptr(i int) *int { return &i }
