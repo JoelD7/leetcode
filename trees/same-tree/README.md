@@ -6,22 +6,21 @@ Given the roots of two binary trees p and q, write a function to check if they a
 Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
 
 
-
-Example 1:
+### Example 1:
 
 ![img_1.png](img_1.png)
 
     Input: p = [1,2,3], q = [1,2,3]
     Output: true
 
-Example 2:
+### Example 2:
 
 ![img_2.png](img_2.png)
 
     Input: p = [1,2], q = [1,null,2]
     Output: false
 
-Example 3:
+### Example 3:
 
 ![img_3.png](img_3.png)
 
@@ -30,12 +29,18 @@ Example 3:
 
 
 
-Constraints:
+### Constraints:
 
     The number of nodes in both trees is in the range [0, 100].
     -10^4 <= Node.val <= 10^4
 
 # Solution
+Traverse the trees simultaneously, moving through the same children for both. At the moment the pointers have different values, return false. If this never happens the trees are the same so return true.
+
+# Solution(deprecated, March 2024)
+
+> This is from when I first solved this problem on march 2024. It's not optimal but I left here for historic reasons.
+
 The solution parts from the fact that if both trees are the same, then they will both have the same pre or post order traversal path. 
 
 I decided to add a nil/flag value that indicates the absence of a real node value, i.e., a non-existent node. This `nilValue` is -10,001 because the minimum value a node can have according to the problem description is -10,000, so we can rest assured that the appearance of -10001 indicates a nil node and not a node with said value.
