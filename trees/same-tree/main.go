@@ -8,7 +8,8 @@ type TreeNode struct {
 
 const nilValue = -10001
 
-func isSameTree(p *TreeNode, q *TreeNode) bool {
+// This is from when I first solved this problem on march 2024. It's not optimal but I left here for historic reasons.
+func isSameTreeDeprecated(p *TreeNode, q *TreeNode) bool {
 	pPath := walk(p, []int{})
 	qPath := walk(q, []int{})
 
