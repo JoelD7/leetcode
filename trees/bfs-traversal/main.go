@@ -4,11 +4,11 @@ import (
 	"github.com/JoelD7/leetcode/trees/utils"
 )
 
-func bfsTraversalRecursive(node *utils.BinaryNode) [][]int {
+func bfsTraversalRecursive(node *utils.TreeNode) [][]int {
 	var nodesByLevel [][]int
-	var recurse func(node *utils.BinaryNode, level int, nodesByLevel *[][]int)
+	var recurse func(node *utils.TreeNode, level int, nodesByLevel *[][]int)
 
-	recurse = func(node *utils.BinaryNode, level int, nodesByLevel *[][]int) {
+	recurse = func(node *utils.TreeNode, level int, nodesByLevel *[][]int) {
 		if node == nil {
 			return
 		}
@@ -34,7 +34,7 @@ type Queue struct {
 }
 
 type Node struct {
-	val  *utils.BinaryNode
+	val  *utils.TreeNode
 	next *Node
 }
 
@@ -42,7 +42,7 @@ func NewQueue() *Queue {
 	return &Queue{}
 }
 
-func (q *Queue) enqueue(val *utils.BinaryNode) {
+func (q *Queue) enqueue(val *utils.TreeNode) {
 	q.size++
 
 	node := &Node{val: val, next: nil}
@@ -57,7 +57,7 @@ func (q *Queue) enqueue(val *utils.BinaryNode) {
 	}
 }
 
-func (q *Queue) dequeue() *utils.BinaryNode {
+func (q *Queue) dequeue() *utils.TreeNode {
 	q.size--
 
 	if q.head == nil {
@@ -70,10 +70,10 @@ func (q *Queue) dequeue() *utils.BinaryNode {
 	return val
 }
 
-func bfsTraversalIterative(node *utils.BinaryNode) [][]int {
+func bfsTraversalIterative(node *utils.TreeNode) [][]int {
 	var result [][]int
 	var levelWidth int
-	var cur *utils.BinaryNode
+	var cur *utils.TreeNode
 
 	queue := NewQueue()
 	queue.enqueue(node)

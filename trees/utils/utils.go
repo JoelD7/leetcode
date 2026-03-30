@@ -4,10 +4,10 @@ import (
 	"fmt"
 )
 
-type BinaryNode struct {
+type TreeNode struct {
 	Val   int
-	Left  *BinaryNode
-	Right *BinaryNode
+	Left  *TreeNode
+	Right *TreeNode
 }
 
 /*
@@ -24,13 +24,13 @@ type BinaryNode struct {
 
 *
 */
-func BuildTree(values []*int) *BinaryNode {
+func BuildTree(values []*int) *TreeNode {
 	if len(values) == 0 || values[0] == nil {
 		return nil
 	}
 
-	root := &BinaryNode{Val: *values[0]}
-	queue := []*BinaryNode{root}
+	root := &TreeNode{Val: *values[0]}
+	queue := []*TreeNode{root}
 	i := 1
 
 	for len(queue) > 0 && i < len(values) {
@@ -39,14 +39,14 @@ func BuildTree(values []*int) *BinaryNode {
 
 		// Left child
 		if i < len(values) && values[i] != nil {
-			current.Left = &BinaryNode{Val: *values[i]}
+			current.Left = &TreeNode{Val: *values[i]}
 			queue = append(queue, current.Left)
 		}
 		i++
 
 		// Right child
 		if i < len(values) && values[i] != nil {
-			current.Right = &BinaryNode{Val: *values[i]}
+			current.Right = &TreeNode{Val: *values[i]}
 			queue = append(queue, current.Right)
 		}
 		i++
@@ -55,7 +55,7 @@ func BuildTree(values []*int) *BinaryNode {
 }
 
 // Print outputs the tree to the console starting from the root.
-func (n *BinaryNode) Print() {
+func (n *TreeNode) Print() {
 	if n == nil {
 		fmt.Println("<empty tree>")
 		return
@@ -66,7 +66,7 @@ func (n *BinaryNode) Print() {
 }
 
 // printSubTree handles the recursive drawing of branches.
-func printSubTree(node *BinaryNode, prefix string, isLeft bool) {
+func printSubTree(node *TreeNode, prefix string, isLeft bool) {
 	if node == nil {
 		return
 	}
