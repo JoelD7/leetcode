@@ -25,3 +25,9 @@ Given the root of a binary search tree, and an integer k, return the kth smalles
     1 <= k <= n <= 10^4
     0 <= Node.val <= 10^4
 
+# Solution
+**The $k^{th}$ smallest element in a BST is the $k^{th}$ value in the in-order traversal array of the tree**. So we perform in-order traversal, adding each element to the array and returning the value at the moment the array reaches a length of `k`. There is no need to keep going deeper.
+
+### Note
+
+- We use `-1` as sentinel value because according to the problem’s constraints, all nodes in the tree are positive numbers.

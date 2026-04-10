@@ -7,31 +7,26 @@ type TreeNode struct {
 }
 
 func kthSmallest(root *TreeNode, k int) int {
-	var count int
-	smallest := -1
-	var dfs func(node *TreeNode)
+	arr := make([]int, 0)
+	var dfs func(node *TreeNode) int
 
-	dfs = func(node *TreeNode) {
-		//I think this will never happen. Check later
+	dfs = func(node *TreeNode) int {
 		if node == nil {
-			return
+			return -1
 		}
 
-		if node.Left != nil && node.Left.Val < node.Val {
-			dfs(node.Left)
+		smallest := dfs(node.Left)
+		if smallest != -1 {
+			return smallest
 		}
 
-		if count < k && node.Right != nil {
-			dfs(node.Right)
+		arr = append(arr, node.Val)
+		if len(arr) == k {
+			return arr[len(arr)-1]
 		}
 
-		count++
-		if count == k && smallest == -1 {
-			smallest = node.Val
-		}
+		return dfs(node.Right)
 	}
 
-	dfs(root)
-
-	return smallest
+	return dfs(root)
 }
