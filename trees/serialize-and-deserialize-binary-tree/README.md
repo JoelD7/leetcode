@@ -26,3 +26,18 @@ Design an algorithm to serialize and deserialize a binary tree. There is no rest
 
     The number of nodes in the tree is in the range [0, 10^4].
     -1000 <= Node.val <= 1000
+
+# Solution
+### Prerequisites
+
+To understand this solution you need to know how BFS tree traversal works using queues.
+
+### Serialize
+
+We build a string representing the BFS traversal of the tree, including nil children. This is important as it will allow us to know the nodes that don’t have any children or only have a single children during the deserialization phase. In this way, calling `serialize` with the tree from example 1 would produce an output string: “`1,2,3,nil,nil,4,5`”
+
+### Deserialize
+
+We transform the output string from `serialize` to an array, splitting by “,”. In the same way we used a queue to do BFS traversal in the `serialize` function, we use a queue to do BFS “building” in the `deserialize` function. It’s basically doing the opposite to what we did before.
+
+We obviously ignore the strings of the input array that are “nil”, as they signalize(we established this on the `serialize` function) the non-existence of a child node.

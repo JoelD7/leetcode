@@ -64,7 +64,6 @@ func (this *Codec) serialize(root *TreeNode) string {
 func (this *Codec) deserialize(data string) *TreeNode {
 	inputArr := strings.Split(data, ",")
 
-	//1,2,3,nil,nil,4,5,6,7,nil,nil,nil,nil,nil,nil
 	if inputArr[0] == "nil" {
 		return nil
 	}
