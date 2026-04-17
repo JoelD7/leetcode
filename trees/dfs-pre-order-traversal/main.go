@@ -4,7 +4,7 @@ import (
 	"github.com/JoelD7/leetcode/trees/utils"
 )
 
-func preOrderTraversalRecursive(node *utils.TreeNode) []int {
+func preOrderTraversalRecursive(root *utils.TreeNode) []int {
 	var result []int
 
 	var recurse func(node *utils.TreeNode, result *[]int)
@@ -19,7 +19,7 @@ func preOrderTraversalRecursive(node *utils.TreeNode) []int {
 		recurse(node.Right, result)
 	}
 
-	recurse(node, &result)
+	recurse(root, &result)
 
 	return result
 }
@@ -65,13 +65,13 @@ func (s *Stack) Pop() *utils.TreeNode {
 	return val
 }
 
-func preOrderTraversalIterative(node *utils.TreeNode) []int {
+func preOrderTraversalIterative(root *utils.TreeNode) []int {
 	var result []int
 
 	var cur *utils.TreeNode
 
 	stack := NewStack()
-	stack.Push(node)
+	stack.Push(root)
 
 	for stack.size > 0 {
 		cur = stack.Pop()
