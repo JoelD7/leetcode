@@ -4,7 +4,7 @@ import (
 	"github.com/JoelD7/leetcode/trees/utils"
 )
 
-func bfsTraversalRecursive(node *utils.TreeNode) [][]int {
+func bfsTraversalRecursive(root *utils.TreeNode) [][]int {
 	var nodesByLevel [][]int
 	var recurse func(node *utils.TreeNode, level int, nodesByLevel *[][]int)
 
@@ -22,7 +22,7 @@ func bfsTraversalRecursive(node *utils.TreeNode) [][]int {
 		recurse(node.Right, level+1, nodesByLevel)
 	}
 
-	recurse(node, 0, &nodesByLevel)
+	recurse(root, 0, &nodesByLevel)
 
 	return nodesByLevel
 }
@@ -70,13 +70,13 @@ func (q *Queue) dequeue() *utils.TreeNode {
 	return val
 }
 
-func bfsTraversalIterative(node *utils.TreeNode) [][]int {
+func bfsTraversalIterative(root *utils.TreeNode) [][]int {
 	var result [][]int
 	var levelWidth int
 	var cur *utils.TreeNode
 
 	queue := NewQueue()
-	queue.enqueue(node)
+	queue.enqueue(root)
 
 	for queue.size > 0 {
 		nodesInLevel := make([]int, 0)
