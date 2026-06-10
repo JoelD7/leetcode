@@ -64,6 +64,32 @@ _Choosing tasks with higher frequencies_
 
 We’ll use a max heap in the form of a priority queue for this. A priority queue will allow us to instantly access the element with the highest frequency in O(1) time. We’ll continuosly remove the largest frequencies from the queue to signify that a task is being processed. If after processing it one time, the task has more frequencies, we’ll rebuild the max heap with the remaining frequencies of each task.
 
+### Cooldown period
+
+In the code, the cooldown period is defined by $n + 1$ which is kept on the variable `cycle`, but, *what is the cooldown period?* Indicates how many events need to happen before a task of the same letter is repeated in the sequence. For example, for tasks `["A", "A", "B", "B"]` and `n = 2`, 3(N+1) events need to happen before A is done again: `A - B - idle - A...`.
+
+Let’s use an example:
+
+Imagine you have tasks **`["A", "A", "B", "B"]`** and **`n = 2`**.
+Your cycle size or cooldown period (`n + 1`) is **3**.
+
+**Cycle 1:**
+
+- You pop `A` and `B` from the heap. The heap is now empty, so the inner loop breaks. `taskCount = 2`.
+- You decrement their frequencies and push `A` and `B` back into the heap (they each have 1 left).
+- **Check:** Is the heap empty? **No.**
+- **Action:** `time += 3` (Because the CPU ran `A -> B -> Idle` to satisfy the cooldown for A and B). To repeat `A` we have to wait `n + 1` time.
+
+**Cycle 2:**
+
+- You pop `A` and `B` from the heap. The heap is empty, so the inner loop breaks. `taskCount = 2`.
+- Their frequencies are now 0, so you push *nothing* back to the heap.
+- **Check:** Is the heap empty? **Yes.**
+- **Action:** `time += 2` (Because this was the last batch! The CPU just ran `A -> B` and finished. No need to append an Idle at the end).
+
+**Total Time:** `3 + 2 = 5`.
+Schedule visually: `[A, B, Idle, A, B]`
+
 ### Variables
 
 - `time`: variable that accumulates the total cycles/time spent. We’ll update it on each iteration after we figure out the correct way to organize tasks. This is the return value of the function.
@@ -92,29 +118,15 @@ We’ll use a max heap in the form of a priority queue for this. A priority queu
         2. Pop the top element (`task` frequency) from the priority queue.
         3. If the popped frequency is greater than 1, decrement it by 1 and store it in the `store` array. This means that this specific tasks still needs to be processed later, so we store it on this array to rebuild `heap` and continue processing more tasks in subsequent iterations.
         4. Increment `taskCount` as it keeps track of the number of tasks processed in the current cycle.
+            
+           ------------------
+
+           **The condition `cycle > 0 && !heap.isEmtpy()` is the key part of this algorithm**. We can only add tasks for processing(increase the count) while being inside the cooldown period, which is signaled by `cycle > 0`. This is what dictates the maximum amount of tasks we can process. If after this inner loop there are no pending tasks(heap is empty) then we can safely add `taskCount` to `time`. Otherwise, we need to add `n+1`(which is the starting value of `cycle`). It is thanks to the `cycle > 0` condition that we can safely add `n + 1` to `time` when there still are pending tasks. With this condition we’re saying: “process *at most* N+1(`cycle`) tasks, if after this there are still tasks to process then increase the timer by the task we just processed(N+1); otherwise, increase it only by `taskCount`". Without this safeguard the `time` and the actual tasks being taken out of the heap would differ.
+
+           The second component(`!heap.isEmtpy()`) of the condition acts as a safety check to prevent access to an empty heap.
+
     5. After processing tasks in the cycle, restore the updated frequencies (stored in the `store` array) back to `heap`
     6. **Update `time`**.
         1. If the heap is empty we add `taskCount`, because at this point in the code, `heap` being empty means there are no more tasks to process so there is not need to add any idle time.
-        2. On the other hand, if `heap` has elements then it means we still have tasks to process so we must increase `time` by `n + 1`. Why by this amount? Remember that `n + 1` means *cooldown* period, or, how much time we have to wait before repeating a task. Since `heap` still has elements, this implies there are tasks that must be repeated. However, to repeat them again and begin another cycle safely we must wait `n + 1` time. Let’s use an example:
-
-           Imagine you have tasks **`["A", "A", "B", "B"]`** and **`n = 2`**.
-           Your cycle size (`n + 1`) is **3**.
-
-           **Cycle 1:**
-
-            - You pop `A` and `B` from the heap. The heap is now empty, so the inner loop breaks. `taskCount = 2`.
-            - You decrement their frequencies and push `A` and `B` back into the heap (they each have 1 left).
-            - **Check:** Is the heap empty? **No.**
-            - **Action:** `time += 3` (Because the CPU ran `A -> B -> Idle` to satisfy the cooldown for A and B). To repeat `A` we have to wait `n + 1` time.
-
-           **Cycle 2:**
-
-            - You pop `A` and `B` from the heap. The heap is empty, so the inner loop breaks. `taskCount = 2`.
-            - Their frequencies are now 0, so you push *nothing* back to the heap.
-            - **Check:** Is the heap empty? **Yes.**
-            - **Action:** `time += 2` (Because this was the last batch! The CPU just ran `A -> B` and finished. No need to append an Idle at the end).
-
-           **Total Time:** `3 + 2 = 5`.
-           Schedule visually: `[A, B, Idle, A, B]`
-
+        2. On the other hand, if `heap` has elements then it means we still have tasks to process so we must increase `time` by `n + 1`. Why by this amount? Remember that `n + 1` means *cooldown* period, or, how much time we have to wait before repeating a task. Since `heap` still has elements, this implies there are tasks that must be repeated. However, to repeat them again and begin another cycle safely we must wait `n + 1` time.
 4. Return `time`.
