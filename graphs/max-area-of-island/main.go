@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func maxAreaOfIsland(grid [][]int) int {
 	var dfs func(r, c int)
 	maxArea := 0
@@ -32,9 +28,7 @@ func maxAreaOfIsland(grid [][]int) int {
 	for r := 0; r < len(grid); r++ {
 		for c := 0; c < len(grid[r]); c++ {
 			count = 0
-			if r == 3 && c == 8 {
-				fmt.Println()
-			}
+
 			if grid[r][c] != 0 {
 				count++
 				grid[r][c] = 0
