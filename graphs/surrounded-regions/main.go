@@ -20,29 +20,23 @@ func solve(board [][]byte) {
 		dfs(r+1, c)
 	}
 
-	//Left edge
+	//Left and right edges
 	for r := 0; r < len(board); r++ {
 		if board[r][0] == 'O' {
 			dfs(r, 0)
 		}
-	}
 
-	//Top edge
-	for c := 0; c < len(board[0]); c++ {
-		if board[0][c] == 'O' {
-			dfs(0, c)
-		}
-	}
-
-	//Right edge
-	for r := 0; r < len(board); r++ {
 		if board[r][len(board[0])-1] == 'O' {
 			dfs(r, len(board[0])-1)
 		}
 	}
 
-	//Bottom edge
+	//Top and bottom edges
 	for c := 0; c < len(board[0]); c++ {
+		if board[0][c] == 'O' {
+			dfs(0, c)
+		}
+
 		if board[len(board)-1][c] == 'O' {
 			dfs(len(board)-1, c)
 		}
