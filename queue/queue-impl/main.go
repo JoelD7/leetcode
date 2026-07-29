@@ -1,9 +1,13 @@
 package queue_impl
 
+import (
+	"fmt"
+)
+
 type Queue struct {
+	size int
 	head *Node
 	tail *Node
-	size int
 }
 
 type Node struct {
@@ -11,41 +15,46 @@ type Node struct {
 	next *Node
 }
 
-func NewQueue() Queue {
-	return Queue{}
+func NewQueue() *Queue {
+	return &Queue{}
 }
 
-func (this *Queue) isEmpty() bool {
-	return this.size == 0
-}
-
-func (this *Queue) Enqueue(x int) {
-	oldTail := this.tail
-	this.tail = &Node{
-		val: x,
+func (q *Queue) Enqueue(val int) {
+	node := &Node{
+		val: val,
 	}
 
-	if this.isEmpty() {
-		this.head = this.tail
+	if q.size == 0 {
+		q.head = node
+		q.tail = node
 	} else {
-		oldTail.next = this.tail
+		prevTail := q.tail
+		q.tail = node
+		prevTail.next = q.tail
 	}
 
-	this.size++
+	q.size++
 }
 
-func (this *Queue) Dequeue() int {
-	if this.isEmpty() {
-		return -1
+func (q *Queue) IsEmpty() bool {
+	return q.size == 0
+}
+
+func (q *Queue) Dequeue() (int, error) {
+	if q.size == 0 {
+		return 0, fmt.Errorf("empty queue")
 	}
 
-	val := this.head.val
-	this.head = this.head.next
-	this.size--
-
-	return val
+	val := q.head.val
+	q.head = q.head.next
+	q.size--
+	return val, nil
 }
 
-func (this *Queue) Peek() int {
-	return this.head.val
+func (q *Queue) Peek() (int, error) {
+	if q.IsEmpty() {
+		return 0, fmt.Errorf("empty queue")
+	}
+
+	return q.head.val, nil
 }

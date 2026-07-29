@@ -1,45 +1,73 @@
 package queue_impl
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestQueue(t *testing.T) {
 	q := NewQueue()
 
-	assert.True(t, q.isEmpty())
+	assert.True(t, q.IsEmpty())
 	q.Enqueue(1)
 	q.Enqueue(2)
 	q.Enqueue(3)
 	q.Enqueue(4)
 	assert.Equal(t, 4, q.size)
-	assert.False(t, q.isEmpty())
-	assert.Equal(t, 1, q.Peek())
+	assert.False(t, q.IsEmpty())
+
+	val, err := q.Peek()
+	assert.NoError(t, err)
+	assert.Equal(t, 1, val)
 	assert.Equal(t, 4, q.size)
 
-	assert.Equal(t, 1, q.Dequeue())
+	val, err = q.Dequeue()
+	assert.NoError(t, err)
+	assert.Equal(t, 1, val)
 	assert.Equal(t, 3, q.size)
 
-	assert.Equal(t, 2, q.Peek())
+	val, err = q.Peek()
+	assert.NoError(t, err)
+	assert.Equal(t, 2, val)
 	assert.Equal(t, 3, q.size)
 
 	q.Enqueue(5)
 	q.Enqueue(6)
 	q.Enqueue(7)
 	assert.Equal(t, 6, q.size)
-	assert.Equal(t, 2, q.Dequeue())
+
+	val, err = q.Dequeue()
+	assert.NoError(t, err)
+	assert.Equal(t, 2, val)
 	assert.Equal(t, 5, q.size)
-	assert.Equal(t, 3, q.Dequeue())
+
+	val, err = q.Dequeue()
+	assert.NoError(t, err)
+	assert.Equal(t, 3, val)
 	assert.Equal(t, 4, q.size)
 
-	assert.Equal(t, 4, q.Dequeue())
+	val, err = q.Dequeue()
+	assert.NoError(t, err)
+	assert.Equal(t, 4, val)
 	assert.Equal(t, 3, q.size)
 
-	assert.Equal(t, 5, q.Peek())
-	assert.Equal(t, 5, q.Dequeue())
-	assert.Equal(t, 6, q.Dequeue())
-	assert.Equal(t, 7, q.Dequeue())
+	val, err = q.Peek()
+	assert.NoError(t, err)
+	assert.Equal(t, 5, val)
 
-	assert.Equal(t, -1, q.Dequeue())
+	val, err = q.Dequeue()
+	assert.NoError(t, err)
+	assert.Equal(t, 5, val)
+
+	val, err = q.Dequeue()
+	assert.NoError(t, err)
+	assert.Equal(t, 6, val)
+
+	val, err = q.Dequeue()
+	assert.NoError(t, err)
+	assert.Equal(t, 7, val)
+
+	val, err = q.Dequeue()
+	assert.Error(t, err)
 }
