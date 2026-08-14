@@ -5,26 +5,39 @@ import (
 )
 
 func bfsTraversalRecursive(root *utils.TreeNode) [][]int {
-	var nodesByLevel [][]int
-	var recurse func(node *utils.TreeNode, level int, nodesByLevel *[][]int)
+	var res [][]int
+	if root == nil {
+		return res
+	}
 
-	recurse = func(node *utils.TreeNode, level int, nodesByLevel *[][]int) {
-		if node == nil {
+	var traverseLevel func(levelNodes []*utils.TreeNode)
+	traverseLevel = func(levelNodes []*utils.TreeNode) {
+		if len(levelNodes) == 0 {
 			return
 		}
 
-		if len(*nodesByLevel) <= level {
-			*nodesByLevel = append(*nodesByLevel, []int{})
+		var currentLevelVals []int
+		var nextLevelNodes []*utils.TreeNode
+
+		for _, node := range levelNodes {
+			currentLevelVals = append(currentLevelVals, node.Val)
+
+			if node.Left != nil {
+				nextLevelNodes = append(nextLevelNodes, node.Left)
+			}
+			if node.Right != nil {
+				nextLevelNodes = append(nextLevelNodes, node.Right)
+			}
 		}
 
-		(*nodesByLevel)[level] = append((*nodesByLevel)[level], node.Val)
-		recurse(node.Left, level+1, nodesByLevel)
-		recurse(node.Right, level+1, nodesByLevel)
+		res = append(res, currentLevelVals)
+
+		traverseLevel(nextLevelNodes)
 	}
 
-	recurse(root, 0, &nodesByLevel)
+	traverseLevel([]*utils.TreeNode{root})
 
-	return nodesByLevel
+	return res
 }
 
 type Queue struct {
