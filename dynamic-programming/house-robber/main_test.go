@@ -53,4 +53,16 @@ func TestRob(t *testing.T) {
 		// Can rob 1st, 4th, and 6th => 10 + 10 + 10 = 30
 		assert.Equal(t, 30, rob(nums))
 	})
+
+	t.Run("Very large number of houses", func(t *testing.T) {
+		nums := []int{114, 117, 207, 117, 235, 82, 90, 67, 143, 146, 53, 108, 200, 91, 80, 223, 58, 170, 110, 236, 81, 90, 222, 160, 165, 195, 187, 199, 114, 235, 197, 187, 69, 129, 64, 214, 228, 78, 188, 67, 205, 94, 205, 169, 241, 202, 144, 240}
+		assert.Equal(t, 4173, rob(nums))
+	})
+}
+
+func BenchmarkRob(b *testing.B) {
+	nums := []int{1, 2, 3, 1}
+	for i := 0; i < b.N; i++ {
+		rob(nums)
+	}
 }
