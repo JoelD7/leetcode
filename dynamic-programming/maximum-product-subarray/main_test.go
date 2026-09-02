@@ -14,7 +14,7 @@ func TestMaxProduct(t *testing.T) {
 
 	t.Run("Custom examle", func(t *testing.T) {
 		nums := []int{-2, -8, -2, 4}
-		assert.Equal(t, 32, maxProduct(nums))
+		assert.Equal(t, 64, maxProduct(nums))
 	})
 
 	t.Run("Example 2 from Leetcode", func(t *testing.T) {

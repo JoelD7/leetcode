@@ -1,17 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
-
-func TestJOel(t *testing.T) {
-	fmt.Println(strings.TrimLeft("applepenapple", "apple"))
-	fmt.Println(strings.TrimRight("applepenapple", "apple"))
-}
 
 func TestWordBreak(t *testing.T) {
 	t.Run("leetcode exact split", func(t *testing.T) {
