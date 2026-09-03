@@ -44,5 +44,8 @@ To fill out `dp[i]` for any given number `nums[i]`, we look back at all the numb
 For every previous number `nums[j]` where `j < i`:
 
 - **Is it strictly increasing?** We check if `nums[i] > nums[j]`.
-    - **If yes:** It means we can attach `nums[i]` to the end of the longest subsequence that ended at `nums[j]`.
-    - We then update `dp[i]` to be the maximum between its current value and `dp[j] + 1`. Remember that `dp[j]` represents the LIS of a previously calculated subsequence that ended at `nums[j]`. The reason we add 1 here is because we’re including `nums[i]` to this sequence. The reason we choose the max between the current value of `dp[i]` and `dp[j] + 1` is because there may be several LIS before `nums[i]`, and since we want the longest one, we always choose the longest.
+  - **If yes:** It means we can attach `nums[i]` to the end of the longest subsequence that ended at `nums[j]`.
+  - We then update `dp[i]` to be the maximum between its current value and `dp[j] + 1`. Remember that `dp[j]` represents the LIS of a previously calculated subsequence that ended at `nums[j]`. The reason we add 1 here is because we’re including `nums[i]` to this sequence. The reason we choose the max between the current value of `dp[i]` and `dp[j] + 1` is because there may be several LIS before `nums[i]`, and since we want the longest one, we always choose the longest.
+  - **Why do we need to compare with `dp[j] + 1`?** Because of the implied condition inside this block. At this point in the code we already know that `nums[i] > nums[j]`, which means that the subsequence that previously ended in `j` *can now be expanded* to include `i`, in other words, the subsequence that ended in `j` now has one more element, i.e., `dp[j] + 1`.
+
+    You could say this is the “dynamic programming” part of the problem, because we’re reutilizing previously calculated values(`dp[j]`) to derive a new result. If we don’t use `dp[j]` we’d need to calculate the subsequence that ended in `j` again, for every iteration, on every recursive call.
