@@ -3,18 +3,24 @@ package main
 type Graph map[int][]int
 
 func DFS(graph Graph, start int) []int {
-	visited := make([]bool, len(graph))
-	result := make([]int, 0)
+	res := make([]int, 0)
+	visited := make(map[int]bool)
 
 	var dfs func(node int)
 	dfs = func(node int) {
-		if visited[node] {
-			return
-		}
-
 		visited[node] = true
-		for _, neighbors := range graph[node] {
 
+		res = append(res, node)
+		for _, neighbour := range graph[node] {
+			if visited[neighbour] {
+				continue
+			}
+
+			dfs(neighbour)
 		}
 	}
+
+	dfs(start)
+
+	return res
 }
