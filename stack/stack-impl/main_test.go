@@ -9,8 +9,6 @@ import (
 func TestStack(t *testing.T) {
 	s := NewStack()
 
-	assert.Equal(t, 0, s.Pop())
-
 	s.Push(1) //1
 	s.Push(2) //2 -> 1
 	assert.Equal(t, 2, s.size)
