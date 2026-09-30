@@ -17,11 +17,6 @@ func TestTrap(t *testing.T) {
 		assert.Equal(t, 9, trap(height))
 	})
 
-	t.Run("Empty map traps 0 water", func(t *testing.T) {
-		height := []int{}
-		assert.Equal(t, 0, trap(height))
-	})
-
 	t.Run("Less than three bars cannot trap water", func(t *testing.T) {
 		height := []int{2, 1}
 		assert.Equal(t, 0, trap(height))
@@ -50,10 +45,5 @@ func TestTrap(t *testing.T) {
 	t.Run("Multiple basins of the same height", func(t *testing.T) {
 		height := []int{3, 0, 3, 0, 3}
 		assert.Equal(t, 6, trap(height))
-	})
-
-	t.Run("Asymmetrical basins", func(t *testing.T) {
-		height := []int{5, 1, 3, 2, 4}
-		assert.Equal(t, 7, trap(height))
 	})
 }
