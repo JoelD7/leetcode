@@ -1,34 +1,65 @@
 package main
 
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	mergedArr := make([]int, 0, len(nums1)+len(nums2))
+import (
+	"math"
+)
 
-	if len(mergedArr) == 1 {
-		return float64(mergedArr[0])
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	n1, n2 := len(nums1), len(nums2)
+
+	if n1 > n2 {
+		return findMedianSortedArrays(nums2, nums1)
 	}
 
-	var i1, i2 int
+	var max func(a, b int) int
+	max = func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+	var min func(a, b int) int
+	min = func(a, b int) int {
+		if a < b {
+			return a
+		}
+		return b
+	}
 
-	for i1 < len(nums1) && i2 < len(nums2) {
-		if nums1[i1] < nums2[i2] {
-			mergedArr = append(mergedArr, nums1[i1])
-			i1++
+	left := (n1 + n2 + 1) / 2
+	n := n1 + n2
+	low, high := 0, n1
+
+	for low <= high {
+		mid1 := (high + low) / 2
+		mid2 := left - mid1
+
+		l1, l2, r1, r2 := math.MinInt32, math.MinInt32, math.MaxInt32, math.MaxInt32
+
+		if mid1 < n1 {
+			r1 = nums1[mid1]
+		}
+		if mid2 < n2 {
+			r2 = nums2[mid2]
+		}
+		if mid1-1 >= 0 {
+			l1 = nums1[mid1-1]
+		}
+		if mid2-1 >= 0 {
+			l2 = nums2[mid2-1]
+		}
+
+		if l1 <= r2 && l2 <= r1 {
+			if n%2 == 1 {
+				return float64(max(l1, l2))
+			}
+			return float64(max(l1, l2)+min(r1, r2)) / 2.0
+		} else if l1 > r2 {
+			high = mid1 - 1
 		} else {
-			mergedArr = append(mergedArr, nums2[i2])
-			i2++
+			low = mid1 + 1
 		}
 	}
 
-	if i1 < len(nums1) {
-		mergedArr = append(mergedArr, nums1[i1:]...)
-	} else {
-		mergedArr = append(mergedArr, nums2[i2:]...)
-	}
-
-	mid := len(mergedArr) / 2
-	if len(mergedArr)%2 == 0 {
-		return float64(mergedArr[mid]+mergedArr[mid-1]) / 2
-	}
-
-	return float64(mergedArr[mid])
+	return 0
 }
