@@ -6,11 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
 // Helper function to easily construct a linked list for testing
 func buildList(vals ...int) *ListNode {
 	if len(vals) == 0 {
