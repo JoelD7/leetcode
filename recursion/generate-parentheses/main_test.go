@@ -1,18 +1,39 @@
-package generate_parentheses
+package main
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestGenerateParentheses(t *testing.T) {
-	c := require.New(t)
-
-	t.Run("n = 3", func(t *testing.T) {
-		c.Equal([]string{"((()))", "(()())", "(())()", "()(())", "()()()"}, generateParenthesis(3))
+func TestGenerateParenthesis(t *testing.T) {
+	t.Run("n = 1: Single pair", func(t *testing.T) {
+		expected := []string{"()"}
+		assert.ElementsMatch(t, expected, generateParenthesis(1))
 	})
 
-	t.Run("n = 1", func(t *testing.T) {
-		c.Equal([]string{"()"}, generateParenthesis(1))
+	t.Run("n = 2: Two pairs", func(t *testing.T) {
+		expected := []string{"(())", "()()"}
+		assert.ElementsMatch(t, expected, generateParenthesis(2))
+	})
+
+	t.Run("n = 3: Standard Leetcode example", func(t *testing.T) {
+		expected := []string{
+			"((()))",
+			"(()())",
+			"(())()",
+			"()(())",
+			"()()()",
+		}
+		assert.ElementsMatch(t, expected, generateParenthesis(3))
+	})
+
+	t.Run("n = 4: Larger combination set", func(t *testing.T) {
+		expected := []string{
+			"(((())))", "((()()))", "((())())", "((()))()", "(()(()))",
+			"(()()())", "(()())()", "(())(())", "(())()()", "()((()))",
+			"()(()())", "()(())()", "()()(())", "()()()()",
+		}
+		assert.ElementsMatch(t, expected, generateParenthesis(4))
 	})
 }

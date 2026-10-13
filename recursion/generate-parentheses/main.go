@@ -1,4 +1,4 @@
-package generate_parentheses
+package main
 
 func generateParenthesis(n int) []string {
 	res := make([]string, 0)
