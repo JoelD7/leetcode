@@ -1,4 +1,4 @@
-package subsets
+package main
 
 import (
 	"testing"
@@ -7,10 +7,10 @@ import (
 )
 
 func TestSubsets(t *testing.T) {
-	t.Run("Example 1: Three elements", func(t *testing.T) {
+	t.Run("nums = [1, 2, 3]", func(t *testing.T) {
 		nums := []int{1, 2, 3}
 		expected := [][]int{
-			nil, //Leetcode treats "nil" and "{}" as the same; Go doesn't, we use "nil" in unit tests to avoid false negatives
+			{},
 			{1},
 			{2},
 			{1, 2},
@@ -19,39 +19,49 @@ func TestSubsets(t *testing.T) {
 			{2, 3},
 			{1, 2, 3},
 		}
-
-		// Using ElementsMatch because LeetCode allows the answer in any order
 		assert.ElementsMatch(t, expected, subsets(nums))
 	})
 
-	t.Run("Example 2: Single element", func(t *testing.T) {
+	t.Run("nums = [0] (Single element)", func(t *testing.T) {
 		nums := []int{0}
 		expected := [][]int{
-			nil,
+			{},
 			{0},
 		}
-
 		assert.ElementsMatch(t, expected, subsets(nums))
 	})
 
-	t.Run("Two elements", func(t *testing.T) {
+	t.Run("nums = [1, 2] (Two elements)", func(t *testing.T) {
 		nums := []int{1, 2}
 		expected := [][]int{
-			nil,
+			{},
 			{1},
 			{2},
 			{1, 2},
 		}
-
 		assert.ElementsMatch(t, expected, subsets(nums))
 	})
 
-	t.Run("Empty array", func(t *testing.T) {
-		nums := []int{}
+	t.Run("nums = [-1, -2] (Negative numbers)", func(t *testing.T) {
+		nums := []int{-1, -2}
 		expected := [][]int{
-			nil,
+			{},
+			{-1},
+			{-2},
+			{-1, -2},
 		}
+		assert.ElementsMatch(t, expected, subsets(nums))
+	})
 
+	t.Run("nums = [7, 8, 9, 10] (Four elements)", func(t *testing.T) {
+		nums := []int{7, 8, 9, 10}
+		expected := [][]int{
+			{},
+			{7}, {8}, {9}, {10},
+			{7, 8}, {7, 9}, {7, 10}, {8, 9}, {8, 10}, {9, 10},
+			{7, 8, 9}, {7, 8, 10}, {7, 9, 10}, {8, 9, 10},
+			{7, 8, 9, 10},
+		}
 		assert.ElementsMatch(t, expected, subsets(nums))
 	})
 }
