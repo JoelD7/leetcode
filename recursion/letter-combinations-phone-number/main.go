@@ -1,4 +1,4 @@
-package letter_combinations_phone_number
+package main
 
 func letterCombinations(digits string) []string {
 	digitToLetters := map[byte][]string{
