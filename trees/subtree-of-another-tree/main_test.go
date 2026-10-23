@@ -7,46 +7,124 @@ import (
 )
 
 func TestIsSubtree(t *testing.T) {
+	t.Run("Standard match in left subtree", func(t *testing.T) {
+		// root = [3,4,5,1,2]
+		root := &TreeNode{
+			Val: 3,
+			Left: &TreeNode{
+				Val:   4,
+				Left:  &TreeNode{Val: 1},
+				Right: &TreeNode{Val: 2},
+			},
+			Right: &TreeNode{Val: 5},
+		}
 
-	t.Run("Example 1", func(t *testing.T) {
-		//Input: root = [3,4,5,1,2], subRoot = [4,1,2]
-		//	Output: true
-
-		root := BuildTree([]*int{ptr(3), ptr(4), ptr(5), ptr(1), ptr(2)})
-		subRoot := BuildTree([]*int{ptr(4), ptr(1), ptr(2)})
+		// subRoot = [4,1,2]
+		subRoot := &TreeNode{
+			Val:   4,
+			Left:  &TreeNode{Val: 1},
+			Right: &TreeNode{Val: 2},
+		}
 
 		assert.True(t, isSubtree(root, subRoot))
 	})
-}
 
-func BuildTree(values []*int) *TreeNode {
-	if len(values) == 0 || values[0] == nil {
-		return nil
-	}
-
-	root := &TreeNode{Val: *values[0]}
-	queue := []*TreeNode{root}
-	i := 1
-
-	for len(queue) > 0 && i < len(values) {
-		current := queue[0]
-		queue = queue[1:]
-
-		// Left child
-		if i < len(values) && values[i] != nil {
-			current.Left = &TreeNode{Val: *values[i]}
-			queue = append(queue, current.Left)
+	t.Run("Match interrupted by extra leaf node", func(t *testing.T) {
+		// root = [3,4,5,1,2,null,null,null,null,0]
+		root := &TreeNode{
+			Val: 3,
+			Left: &TreeNode{
+				Val:  4,
+				Left: &TreeNode{Val: 1},
+				Right: &TreeNode{
+					Val:  2,
+					Left: &TreeNode{Val: 0},
+				},
+			},
+			Right: &TreeNode{Val: 5},
 		}
-		i++
 
-		// Right child
-		if i < len(values) && values[i] != nil {
-			current.Right = &TreeNode{Val: *values[i]}
-			queue = append(queue, current.Right)
+		// subRoot = [4,1,2]
+		subRoot := &TreeNode{
+			Val:   4,
+			Left:  &TreeNode{Val: 1},
+			Right: &TreeNode{Val: 2},
 		}
-		i++
-	}
-	return root
-}
 
-func ptr(i int) *int { return &i }
+		assert.False(t, isSubtree(root, subRoot))
+	})
+
+	t.Run("Subroot is exactly the same as root", func(t *testing.T) {
+		root := &TreeNode{
+			Val:   1,
+			Left:  &TreeNode{Val: 2},
+			Right: &TreeNode{Val: 3},
+		}
+
+		subRoot := &TreeNode{
+			Val:   1,
+			Left:  &TreeNode{Val: 2},
+			Right: &TreeNode{Val: 3},
+		}
+
+		assert.True(t, isSubtree(root, subRoot))
+	})
+
+	t.Run("Single node match", func(t *testing.T) {
+		root := &TreeNode{Val: 10}
+		subRoot := &TreeNode{Val: 10}
+
+		assert.True(t, isSubtree(root, subRoot))
+	})
+
+	t.Run("Single node mismatch", func(t *testing.T) {
+		root := &TreeNode{Val: 10}
+		subRoot := &TreeNode{Val: 15}
+
+		assert.False(t, isSubtree(root, subRoot))
+	})
+
+	t.Run("Similar values but wrong structure", func(t *testing.T) {
+		root := &TreeNode{
+			Val: 1,
+			Left: &TreeNode{
+				Val:  1,
+				Left: &TreeNode{Val: 1},
+			},
+		}
+
+		// subRoot has right child instead of left
+		subRoot := &TreeNode{
+			Val:   1,
+			Right: &TreeNode{Val: 1},
+		}
+
+		assert.False(t, isSubtree(root, subRoot))
+	})
+
+	t.Run("root =[10,5,null,4], subRoot =[10,4,null,null,5]", func(t *testing.T) {
+		// root = [10,5,null,4]
+		root := &TreeNode{
+			Val: 10,
+			Left: &TreeNode{
+				Val: 5,
+				Left: &TreeNode{
+					Val: 4,
+				},
+			},
+		}
+
+		// subRoot = [10,4,null,null,5]
+		subRoot := &TreeNode{
+			Val: 10,
+			Left: &TreeNode{
+				Val: 4,
+				Right: &TreeNode{
+					Val: 5,
+				},
+			},
+		}
+
+		assert.False(t, isSubtree(root, subRoot))
+	})
+}
