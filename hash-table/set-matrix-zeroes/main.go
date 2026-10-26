@@ -1,4 +1,4 @@
-package set_matrix_zeroes
+package main
 
 func setZeroes(matrix [][]int) {
 	zeroes := map[string]map[int]struct{}{}
