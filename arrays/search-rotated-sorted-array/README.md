@@ -52,6 +52,10 @@ The rotation point is obviously the index that points to the smaller element, th
 	}
 ```
 
+The above code finds a minimum `k` value that satisfies a condition, which is one of the use cases for binary search. On this case the condition is `nums[mid] > nums[right]`. In a properly sorted array this condition would never occur as there is no way that in a sorted array, any index lower than the maximum points to a larger element. So when that condition is satisfied, it means that the array is rotated at some point between `mid` and `right`, so we move the `left` to the right and continue our search. If the condition is not satisfied, it means that the rotation point has to be before `mid`, so we update `right` pointer accordingly.
+
+**What if there is no rotation point because the array is fully sorted?** In that case the `nums[mid] > nums[right]` condition would never be true, `left` would never be updated and remain with its initial value(0) and the code block after this would perform regular binary search.
+
 ---
 
 When then do a regular binary search but first, set our left and right pointers based on the relation that `target` has with our rotation point.
