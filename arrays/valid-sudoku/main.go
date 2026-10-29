@@ -1,4 +1,4 @@
-package valid_sudoku
+package main
 
 func isValidSudoku(board [][]byte) bool {
 	//Maps row number to found digits
