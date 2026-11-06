@@ -1,4 +1,4 @@
-package search_rotated_sorted_array
+package main
 
 func search(nums []int, target int) int {
 	left, mid, right := 0, 0, len(nums)-1

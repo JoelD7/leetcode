@@ -1,4 +1,4 @@
-package search_rotated_sorted_array
+package main
 
 import (
 	"github.com/stretchr/testify/require"
