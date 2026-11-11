@@ -1,8 +1,9 @@
-package missing_number
+package main
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestMissingNumber(t *testing.T) {

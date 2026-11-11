@@ -1,4 +1,4 @@
-package missing_number
+package main
 
 func missingNumber(nums []int) int {
 	n := len(nums)
