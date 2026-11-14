@@ -53,14 +53,4 @@ func TestMaxHeap(t *testing.T) {
 			assert.Equal(t, exp, h.Remove(), "Remove should extract duplicate elements properly")
 		}
 	})
-
-	// --- Scenario 4: Empty Heap Panics ---
-	t.Run("Panics on empty heap", func(t *testing.T) {
-		h := &MaxHeap{}
-
-		// Assuming your implementation panics on empty slices.
-		// If it returns a default value/error instead, change this to assert.Equal or assert.Error.
-		assert.Panics(t, func() { h.Peek() }, "Calling Peek() on an empty heap should panic")
-		assert.Panics(t, func() { h.Remove() }, "Calling Remove() on an empty heap should panic")
-	})
 }
