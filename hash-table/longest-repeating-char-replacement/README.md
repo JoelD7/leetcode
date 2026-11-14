@@ -58,3 +58,13 @@ If our window length is 5, and the most frequent character *in the window* is 3,
 ### 4. Update the max window length
 
 On every iteration we must update the `maxLen` variable if necessary. It’s the return value of the function and holds the maximum window length we find.
+
+## Common mistakes
+
+### Incorrect calculation of `charsToChange`
+
+Sounds silly but it has happened. Doing `mostFreq - windowLen` instead of `windowLen - mostFreq`, will generate negative differences and make the shrinking condition behave unexpectedly. To avoid making that mistake about this: the window length will **always** be larger than `mostFreq`, because  `mostFreq` is the most frequent character *in the current window*.
+
+### When to update `maxLen`(output of the function)
+
+You should update this variable at the end of the window loop, after the window has either shrunken or enlarged.
